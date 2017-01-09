@@ -9,6 +9,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use GuzzleHttp;
 use Illuminate\Support\Facades\Log;
+use App\SolrModel\SolrModel;
 class SolrCopierController extends Controller{
     
     public function getIndexList(Request $request){
@@ -18,11 +19,15 @@ class SolrCopierController extends Controller{
         $response = $client->request('GET');
         $code = $response->getStatusCode();
         $body = $response->getBody();
-        $header = $response->getHeaders();
         $data = json_decode($body);
         Log::info($code);
         $collections = $data->collections;
         Log::info($collections);
-        return response()->json(['collections' => $collections]);
+        return view('copy',['collections' => $collections]);
+    }
+    
+    public function startSyncJob(Request $request){
+        $indexList = $request->get('indexList');
+        SolrModel::syncData($indexList, $srcHost, $srcPort, $destHost, $destPort, $query);
     }
 }

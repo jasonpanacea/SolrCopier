@@ -14,6 +14,9 @@
 <body>
 <form class="am-form am-form-horizontal">
     <div class="am-form-group">
+        <button type="button" id="all" class="am-btn am-btn-primary am-active">SELECT ALL</button>
+    </div>
+    <div class="am-form-group">
         @foreach ($collections as $index)
         <label class="am-checkbox-inline">
             <input type="checkbox" value={{$index}}> {{$index}}
@@ -21,14 +24,20 @@
         @endforeach
     </div>
     <div class="am-form-group">
+        <label for="query" class="am-u-sm-2 am-form-label">Solr Query</label>
+        <div class="am-u-sm-6 am-u-end">
+            <input type="text" id="query" placeholder="">
+        </div>
+    </div>
+    <div class="am-form-group">
         <div class="am-u-sm-10 am-u-sm-offset-2">
-            <button type="button" class="am-btn am-btn-default am-radius" id="next">SUBMIT SYNC JOB</button>
+            <button type="button" class="am-btn am-btn-default am-radius" id="copy">SUBMIT SYNC JOB</button>
         </div>
     </div>
 </form>
 
 <script src="/js/jquery.min.js"></script>
 <script src="/js/amazeui.min.js"></script>
-<script src="/js/operate.js"></script>
+<script src="/js/copy.js"></script>
 </body>
 </html>

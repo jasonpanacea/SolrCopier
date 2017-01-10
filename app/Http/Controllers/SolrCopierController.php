@@ -28,6 +28,11 @@ class SolrCopierController extends Controller{
     
     public function startSyncJob(Request $request){
         $indexList = $request->get('indexList');
+        $srcHost = $request->get('srcHost');
+        $srcPort = $request->get('srcPort');
+        $destHost = $request->get('destHost');
+        $destPort = $request->get('destPort');
+        $query = $request->get('query');
         SolrModel::syncData($indexList, $srcHost, $srcPort, $destHost, $destPort, $query);
     }
 }

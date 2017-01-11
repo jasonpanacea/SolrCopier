@@ -13,7 +13,10 @@ use App\SolrModel\SolrModel;
 class SolrCopierController extends Controller{
     
     public function getIndexList(Request $request){
-        $ip = $request->input('ip');
+        $srcIP = $request->input('srcIP');
+        $srcPort = $request->input('srcPort');
+        $destIP = $request->input('destIP');
+        $destPort = $request->input('destPort');
         $uri = "http://dev.solr.kapner.fitterweb.com:8001/solr/admin/collections?action=LIST&wt=json";
         $client = new GuzzleHttp\Client(['base_uri' => $uri]);
         $response = $client->request('GET');
@@ -23,7 +26,7 @@ class SolrCopierController extends Controller{
         Log::info($code);
         $collections = $data->collections;
         Log::info($collections);
-        return view('copy',['collections' => $collections]);
+        return view('copy',['collections' => $collections, 'code'=>$code]);
     }
     
     public function startSyncJob(Request $request){

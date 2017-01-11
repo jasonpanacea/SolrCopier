@@ -17,10 +17,12 @@ $(function () {
        if ($(this).hasClass("am-active")) {
            $(this).removeClass("am-active");
            $('input[type="checkbox"]').prop('checked', false);
+           $(this).val("SELECT ALL");
        }
         else{
            $(this).addClass("am-active");
            $('input[type="checkbox"]').prop('checked', true);
+           $(this).val("UNSELECT ALL");
        }
     });
 

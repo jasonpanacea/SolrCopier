@@ -13,26 +13,33 @@
 </head>
 <body>
 <form class="am-form am-form-horizontal">
-    <div class="am-form-group">
-        <button type="button" id="all" class="am-btn am-btn-primary am-active">SELECT ALL</button>
-    </div>
-    <div class="am-form-group">
+    <div class="am-form-group am-g am-g-fixed">
         @foreach ($collections as $index)
-        <label class="am-checkbox-inline">
-            <input type="checkbox" value={{$index}}> {{$index}}
-        </label>
+            @if ($loop->last)
+                <label class="am-u-sm-6 am-u-end">
+                    <input type="checkbox" value={{$index}}> {{$index}}
+                </label>
+
+            @else
+                <label class="am-u-sm-6">
+                    <input type="checkbox" value={{$index}}> {{$index}}
+                </label>
+            @endif
         @endforeach
     </div>
     <div class="am-form-group">
         <label for="query" class="am-u-sm-2 am-form-label">Solr Query</label>
-        <div class="am-u-sm-6 am-u-end">
+        <div class="am-u-sm-4 am-u-end">
             <input type="text" id="query" placeholder="">
         </div>
     </div>
     <div class="am-form-group">
-        <div class="am-u-sm-10 am-u-sm-offset-2">
-            <button type="button" class="am-btn am-btn-default am-radius" id="copy">SUBMIT SYNC JOB</button>
-        </div>
+        <span class="am-u-sm-2 am-u-sm-offset-1">
+            <button type="button" id="all" class="am-btn am-btn-primary am-active">SELECT ALL</button>
+        </span>
+        <span class="am-u-sm-2 am-u-sm-offset-1 am-u-end">
+            <button type="button" class="am-btn am-btn-danger am-radius" id="copy">SUBMIT SYNC JOB</button>
+        </span>
     </div>
 </form>
 

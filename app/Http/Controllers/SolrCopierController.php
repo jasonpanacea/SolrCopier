@@ -44,15 +44,12 @@ class SolrCopierController extends Controller{
 
         }
         $destcode = $response->getStatusCode();
-        return response()->json(['srccode'=>$srccode,'destcode'=>$destcode, 'collections'=>$collections]);
+        return response()->json(['srccode'=>$srccode,'destcode'=>$destcode])->cookie('collections', $collections, 2);
     }
 
     public function copyPage(Request $request){
-        var_dump($request->hasCookie('collections'));
-        var_dump($request->hasCookie('laravel_session'));
         $collections = $request->cookie('collections');
-        var_dump($collections);
-        return view('copy',['collections'=>json_decode($collections)]);
+        return view('copy',['collections'=>$collections]);
     }
 
 

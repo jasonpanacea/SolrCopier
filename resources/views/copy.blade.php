@@ -17,12 +17,12 @@
         @foreach ($collections as $index)
             @if ($loop->last)
                 <label class="am-u-sm-6 am-u-end">
-                    <input type="checkbox" value={{$index}}> {{$index}}
+                    <input type="checkbox" checked="checked" value={{$index}} > {{$index}}
                 </label>
 
             @else
                 <label class="am-u-sm-6">
-                    <input type="checkbox" value={{$index}}> {{$index}}
+                    <input type="checkbox" checked="checked" value={{$index}} > {{$index}}
                 </label>
             @endif
         @endforeach

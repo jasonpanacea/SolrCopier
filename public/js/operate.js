@@ -18,8 +18,6 @@ $(function () {
         //need to verify the responese
         $.post('/getIndexList', {'srcIP':srcIP, 'srcPort':srcPort, 'destIP':destIP, 'destPort':destPort}, function (data) {
             if(data.srccode == 200 && data.destcode == 200){
-                console.log(data.collections);
-                Cookies.set('collections', data.collections);
                 window.location.href = '/copyPage';
             }
             else{

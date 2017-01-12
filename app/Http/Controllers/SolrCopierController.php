@@ -6,8 +6,10 @@
  * Time: 4:25 PM
  */
 namespace App\Http\Controllers;
+use App\SolrModel\SolrBaseModel;
 use Illuminate\Http\Request;
 use GuzzleHttp;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Log;
 use App\SolrModel\SolrModel;
 class SolrCopierController extends Controller{
@@ -17,18 +19,43 @@ class SolrCopierController extends Controller{
         $srcPort = $request->input('srcPort');
         $destIP = $request->input('destIP');
         $destPort = $request->input('destPort');
-        $uri = "http://dev.solr.kapner.fitterweb.com:8001/solr/admin/collections?action=LIST&wt=json";
-        $client = new GuzzleHttp\Client(['base_uri' => $uri]);
-        $response = $client->request('GET');
-        $code = $response->getStatusCode();
+        $srcIP = 'dev.solr.kapner.fitterweb.com';
+        $srcPort = '8001';
+        $srcURL = "http://".$srcIP.":".$srcPort."/solr/admin/collections?action=LIST&wt=json";
+        $destURL = "http://".$destIP.":".$destPort."/solr/admin/collections?action=LIST&wt=json";
+        $client = new GuzzleHttp\Client(['base_uri' => $srcURL, 'timeout'  => 2.0]);
+        try{
+            $response = $client->request('GET');
+        } catch (RequestException $e){
+            return response()->json(['reason'=>'source solr does not exist']);
+        }
+        $srccode = $response->getStatusCode();
+
+        //get source solr index data
         $body = $response->getBody();
         $data = json_decode($body);
-        Log::info($code);
         $collections = $data->collections;
-        Log::info($collections);
-        return view('copy',['collections' => $collections, 'code'=>$code]);
+
+        try {
+            $client = new GuzzleHttp\Client(['base_uri' => $destURL, 'timeout'  => 2.0]);
+            $response = $client->request('GET');
+        } catch (RequestException $e){
+            return response()->json(['reason'=>'destination solr does not exist']);
+
+        }
+        $destcode = $response->getStatusCode();
+        return response()->json(['srccode'=>$srccode,'destcode'=>$destcode, 'collections'=>$collections]);
     }
-    
+
+    public function copyPage(Request $request){
+        var_dump($request->hasCookie('collections'));
+        var_dump($request->hasCookie('laravel_session'));
+        $collections = $request->cookie('collections');
+        var_dump($collections);
+        return view('copy',['collections'=>json_decode($collections)]);
+    }
+
+
     public function startSyncJob(Request $request){
         $indexList = $request->get('indexList');
         $srcHost = $request->get('srcHost');

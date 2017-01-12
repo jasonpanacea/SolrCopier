@@ -7,6 +7,8 @@
     <meta name="keywords" content="">
     <meta name="viewport"
           content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Hello Amaze UI</title>
 
     <link rel="stylesheet" href="/css/amazeui.min.css">
@@ -45,6 +47,7 @@
 
 <script src="/js/jquery.min.js"></script>
 <script src="/js/amazeui.min.js"></script>
+<script src="/js/js.cookie.js"></script>
 <script src="/js/operate.js"></script>
 </body>
 </html>

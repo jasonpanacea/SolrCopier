@@ -1,24 +1,30 @@
 
 $(function () {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     $("#next").click(function () {
         var srcIP = $("#src-ip").val();
         var srcPort = $("#src-port").val();
         var destIP = $("#dest-ip").val();
         var destPort = $("#dest-port").val();
-        //need to verify the ip&port
-        if (!((checkIP(srcIP) && checkIP(destIP)))){
-            alert('wrong ip input');
-            return;
-        }
+        //need to verify port
         if((isNaN(destPort)||isNaN(srcPort))){
             alert('wrong port input');
             return;
         }
-        var url = "http://dev.solr.kapner.fitterweb.com:8001/solr/admin/collections?action=LIST&wt=json";
         //need to verify the responese
-        window.location.href = '/getIndexList';
         $.post('/getIndexList', {'srcIP':srcIP, 'srcPort':srcPort, 'destIP':destIP, 'destPort':destPort}, function (data) {
-            
+            if(data.srccode == 200 && data.destcode == 200){
+                console.log(data.collections);
+                Cookies.set('collections', data.collections);
+                window.location.href = '/copyPage';
+            }
+            else{
+                alert(data.reason);
+            }
         });
     });
 

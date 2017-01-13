@@ -6,6 +6,7 @@
  * Time: 4:25 PM
  */
 namespace App\Http\Controllers;
+use App\CopyTask;
 use App\SolrModel\SolrBaseModel;
 use Illuminate\Http\Request;
 use GuzzleHttp;
@@ -54,12 +55,15 @@ class SolrCopierController extends Controller{
 
 
     public function startSyncJob(Request $request){
-        $indexList = $request->get('indexList');
-        $srcHost = $request->get('srcHost');
-        $srcPort = $request->get('srcPort');
-        $destHost = $request->get('destHost');
-        $destPort = $request->get('destPort');
-        $query = $request->get('query');
-        SolrModel::syncData($indexList, $srcHost, $srcPort, $destHost, $destPort, $query);
+        $copyTask = new CopyTask();
+        $copyTask->status = 0;
+        $copyTask->indexList = $request->get('indexList');
+        $copyTask->srcHost = $request->get('srcHost');
+        $copyTask->srcPort = $request->get('srcPort');
+        $copyTask->destHost = $request->get('destHost');
+        $copyTask->destPort = $request->get('destPort');
+        $copyTask->query = $request->get('query');
+        $copyTask->save();
+        $this->dispatch($copyTask);
     }
 }

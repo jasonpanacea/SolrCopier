@@ -451,10 +451,10 @@ class SolrModel extends SolrBaseModel
     {
         Log::info("----------------syncData START--------------------\n");
         foreach ($indexList as $index){
-            $fromIndex = new SolrModel($index);
-            $fromIndex->setConfig($srcHost, $srcPort, $index);
-            $toIndex = new SolrModel($index);
-            $toIndex->setConfig($destHost, $destPort, 'dev-tags-copy');
+            $fromIndex = new SolrModel($index->src);
+            $fromIndex->setConfig($srcHost, $srcPort, $index->src);
+            $toIndex = new SolrModel($index->dest);
+            $toIndex->setConfig($destHost, $destPort, $index->dest);
             //delete all previous data or the data the query refers ???
             if($deletePreviousData){
                 $toIndex->delByQuery($query);
@@ -474,7 +474,7 @@ class SolrModel extends SolrBaseModel
                 }
             }
 
-            Log::info("Sync ".$index." done.\n");
+            Log::info("Sync from ".$index->src." to ".$index->dest." done.\n");
         }
         Log::info("----------------syncData END--------------------\n");
 

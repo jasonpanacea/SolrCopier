@@ -33,7 +33,7 @@
             </div>
             <div class="am-form-group">
         <span class="am-u-sm-2 am-u-sm-offset-1">
-            <button type="button" id="all" class="am-btn am-btn-primary am-active">SELECT ALL</button>
+            <button type="button" id="all" class="am-btn am-btn-primary am-active">UNSELECT ALL</button>
         </span>
             </div>
         </form>
@@ -46,10 +46,10 @@
         <form class="am-form am-form-horizontal">
             <div class="am-form-group am-g am-g-fixed">
                 @foreach ($srcCollections as $srcIndex)
-                    <div class="am-g am-g-fixed"  style="display: none" id={{$srcIndex}}>
-                        <label class="am-u-sm-4 am-form-label">{{$srcIndex}}</label>
+                    <div class="am-g am-g-fixed" id={{$srcIndex}}>
+                        <label class="am-u-sm-4 am-form-label">{{$srcIndex}} <span class="am-icon-share"></span></label>
                         <div class="am-u-sm-8 am-u-end">
-                            <select>
+                            <select id={{$srcIndex."_sel"}}>
                                 @foreach ($destCollections as $destIndex)
                                     <option value={{$destIndex}}>{{$destIndex}}</option>
                                 @endforeach
@@ -69,9 +69,9 @@
     </div>
 </div>
 <div class="am-form-group">
-            <span class="am-u-sm-2 am-u-sm-offset-1 am-u-end">
-            <button type="button" class="am-btn am-btn-danger am-radius" id="copy">SUBMIT SYNC JOB</button>
-        </span>
+    <span class="am-u-sm-2 am-u-sm-offset-1 am-u-end">
+        <button type="button" class="am-btn am-btn-danger am-radius" id="copy">SUBMIT SYNC JOB</button>
+    </span>
 </div>
 
 <script src="/js/jquery.min.js"></script>

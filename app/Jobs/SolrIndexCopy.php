@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Jobs;
-
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-
+use Illuminate\Support\Facades\Log;
 use App\SolrModel\SolrModel;
 use App\CopyTask;
 class SolrIndexCopy implements ShouldQueue
@@ -32,8 +32,22 @@ class SolrIndexCopy implements ShouldQueue
      */
     public function handle()
     {
-        //
-        SolrModel::syncData($this->task->indexList, $this->task->srcHost, $this->task->srcPort, $this->task->destHost, $this->task->destPort, $this->task->query);
+        Log::info("start handle task: ".$this->task->id);
+        $this->task->status = 'scheduled';
+        $this->task->save();
+        Log::info("start handle task: ".$this->task->status);
+        SolrModel::syncData(json_decode($this->task->indexList), $this->task->srcHost, $this->task->srcPort, $this->task->destHost, $this->task->destPort, $this->task->query);
+        Log::info("finish handle task: ".$this->task->id);
+        $this->task->status = 'finished';
+        $this->task->save();
+        Log::info("finish handle task: ".$this->task->status);
+    }
 
+    public function failed(Exception $e)
+    {
+        Log::error("failed handle task: ".$this->task->id);
+        Log::error("fail message: ".$e->getMessage());
+        $this->task->status = 'failed';
+        $this->task->save();
     }
 }

@@ -1,16 +1,27 @@
 
 $(function () {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     $("#copy").click(function () {
         var indexList =[];
         $('input[type="checkbox"]:checked').each(function(){
             indexList.push($(this).val());
         });
         var query = $("#query").val();
-        console.log(indexList);
-        console.log(query);
-        $.post('/submitJob',{'indexList':indexList, 'query':query}, function (data) {
+        $.post('/startSyncJob',{'indexList':indexList, 'query':query}, function (data) {
 
         });
+    });
+    $('input[type="checkbox"]').change(function () {
+        if($(this).prop('checked')){
+            $("#"+$(this).val()).show();
+        }
+        else{
+            $("#"+$(this).val()).hide();
+        }
     });
 
     $("#all").click(function () {

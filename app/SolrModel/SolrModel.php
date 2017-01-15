@@ -7,7 +7,6 @@
  * Time: 2:34 PM
  */
 namespace App\SolrModel;
-use App\Util\SolrUtils;
 use Illuminate\Support\Facades\Log;
 use Solarium;
 class SolrModel extends SolrBaseModel
@@ -453,9 +452,9 @@ class SolrModel extends SolrBaseModel
         Log::info("----------------syncData START--------------------\n");
         foreach ($indexList as $index){
             $fromIndex = new SolrModel($index);
-            $fromIndex->setConfig($srcHost, $srcPort, SolrBaseModel::$PRO_INDEX_MAP[$index]);
+            $fromIndex->setConfig($srcHost, $srcPort, $index);
             $toIndex = new SolrModel($index);
-            $toIndex->setConfig($destHost, $destPort, SolrBaseModel::$DEV_INDEX_MAP[$index]);
+            $toIndex->setConfig($destHost, $destPort, 'dev-tags-copy');
             //delete all previous data or the data the query refers ???
             if($deletePreviousData){
                 $toIndex->delByQuery($query);

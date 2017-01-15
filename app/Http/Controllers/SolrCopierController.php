@@ -13,6 +13,7 @@ use GuzzleHttp;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Log;
 use App\SolrModel\SolrModel;
+use App\Jobs\SolrIndexCopy;
 class SolrCopierController extends Controller{
     
     public function getIndexList(Request $request){
@@ -20,8 +21,6 @@ class SolrCopierController extends Controller{
         $srcPort = $request->input('srcPort');
         $destIP = $request->input('destIP');
         $destPort = $request->input('destPort');
-        $srcIP = 'dev.solr.kapner.fitterweb.com';
-        $srcPort = '8001';
         $srcURL = "http://".$srcIP.":".$srcPort."/solr/admin/collections?action=LIST&wt=json";
         $destURL = "http://".$destIP.":".$destPort."/solr/admin/collections?action=LIST&wt=json";
         $client = new GuzzleHttp\Client(['base_uri' => $srcURL, 'timeout'  => 2.0]);
@@ -35,7 +34,7 @@ class SolrCopierController extends Controller{
         //get source solr index data
         $body = $response->getBody();
         $data = json_decode($body);
-        $collections = $data->collections;
+        $srcCollections = $data->collections;
 
         try {
             $client = new GuzzleHttp\Client(['base_uri' => $destURL, 'timeout'  => 2.0]);
@@ -45,25 +44,38 @@ class SolrCopierController extends Controller{
 
         }
         $destcode = $response->getStatusCode();
-        return response()->json(['srccode'=>$srccode,'destcode'=>$destcode])->cookie('collections', $collections, 2);
+        //get source solr index data
+        $body = $response->getBody();
+        $data = json_decode($body);
+        $destCollections = $data->collections;
+
+        return response()->json(['srccode'=>$srccode,'destcode'=>$destcode])->cookie('srcCollections', $srcCollections, 2)
+            ->cookie('destCollections', $destCollections, 20)->cookie('srcHost', $srcIP, 20)
+            ->cookie('srcPort', $srcPort, 20)->cookie('destHost', $destIP, 20)
+            ->cookie('destPort', $destPort, 20);
     }
 
     public function copyPage(Request $request){
-        $collections = $request->cookie('collections');
-        return view('copy',['collections'=>$collections]);
+        $srcCollections = $request->cookie('srcCollections');
+        $destCollections = $request->cookie('destCollections');
+        return view('copy',['srcCollections'=>$srcCollections,'destCollections'=>$destCollections]);
     }
 
 
     public function startSyncJob(Request $request){
         $copyTask = new CopyTask();
-        $copyTask->status = 0;
-        $copyTask->indexList = $request->get('indexList');
-        $copyTask->srcHost = $request->get('srcHost');
-        $copyTask->srcPort = $request->get('srcPort');
-        $copyTask->destHost = $request->get('destHost');
-        $copyTask->destPort = $request->get('destPort');
-        $copyTask->query = $request->get('query');
+        $copyTask->status = 'queued';
+        $copyTask->indexList = json_encode($request->get('indexList'));
+        $copyTask->srcHost = $request->cookie('srcHost');
+        $copyTask->srcPort = $request->cookie('srcPort');
+        $copyTask->destHost = $request->cookie('destHost');
+        $copyTask->destPort = $request->cookie('destPort');
+        $query = $request->get('query');
+        if(empty($query) || $query== '')
+            $query = '*:*';
+        $copyTask->query = $query;
         $copyTask->save();
-        $this->dispatch($copyTask);
+        $this->dispatch(new SolrIndexCopy($copyTask));
+        return response()->json(['id'=>$copyTask->id]);
     }
 }

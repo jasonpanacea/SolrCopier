@@ -79,26 +79,7 @@ class SolrBaseModel
      */
     public function __construct($indexName)
     {
-        $appEnv = env('APP_ENV');
-        
-        if ($appEnv == 'local') {
-          $this->host = 'localhost';
-          $this->port = 8983;
-        } else if ($appEnv == 'dev') {
-          $this->host = 'dev.solr.kapner.fitterweb.com';
-          $this->port = 8001;
-        } else {
-          $this->host = 'internal-kapner-solr-cluster-1812282337.us-east-1.elb.amazonaws.com';
-          $this->port = 80;
-        }
-
-        if ($appEnv == 'dev') {
-          $indexMap = SolrBaseModel::$DEV_INDEX_MAP;
-        } else {
-          $indexMap = SolrBaseModel::$PRO_INDEX_MAP;
-        }
-
-        $this->indexName = $indexMap[$indexName];
+        $this->indexName = $indexName;
         $this->client = new Solarium\Client($this->getConfig());
     }
     

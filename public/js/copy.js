@@ -16,7 +16,7 @@ $(function () {
         console.log(indexList);
         var query = $("#query").val();
         $.post('/startSyncJob',{'indexList':indexList, 'query':query}, function (data) {
-
+            alert('the job has bee submitted');
         });
     });
     $('input[type="checkbox"]').change(function () {

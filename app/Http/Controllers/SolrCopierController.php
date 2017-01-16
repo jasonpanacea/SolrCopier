@@ -78,4 +78,9 @@ class SolrCopierController extends Controller{
         $this->dispatch(new SolrIndexCopy($copyTask));
         return response()->json(['id'=>$copyTask->id]);
     }
+
+    public function jobList(Request $request){
+        $jobList  = CopyTask::all();
+        return view('jobs',['jobList'=>$jobList]);
+    }
 }

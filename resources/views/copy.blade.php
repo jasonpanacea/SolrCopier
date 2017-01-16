@@ -1,17 +1,7 @@
 <!doctype html>
 <html class="no-js">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Hello Amaze UI</title>
-
-    <link rel="stylesheet" href="/css/amazeui.min.css">
-</head>
+@extends('header')
+@section('content')
 <body>
 <div class="am-panel am-panel-secondary">
     <div class="am-panel-hd">source index list</div>
@@ -76,7 +66,7 @@
 
 <script src="/js/jquery.min.js"></script>
 <script src="/js/amazeui.min.js"></script>
-<script src="/js/js.cookie.js"></script>
 <script src="/js/copy.js"></script>
 </body>
+@endsection
 </html>

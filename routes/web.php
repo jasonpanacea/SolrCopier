@@ -17,3 +17,4 @@ Route::get('/', function () {
 Route::post('getIndexList', 'SolrCopierController@getIndexList');
 Route::get('copyPage', 'SolrCopierController@copyPage');
 Route::post('startSyncJob', 'SolrCopierController@startSyncJob');
+Route::get('jobList', 'SolrCopierController@jobList');

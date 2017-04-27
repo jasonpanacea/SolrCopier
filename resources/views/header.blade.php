@@ -27,11 +27,11 @@
 
 
         <div class="am-topbar-right">
-            <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm">注册</button>
+            <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm">Sign Up</button>
         </div>
 
         <div class="am-topbar-right">
-            <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm">登录</button>
+            <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm">Login</button>
         </div>
     </div>
 </header>

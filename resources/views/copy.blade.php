@@ -1,3 +1,8 @@
+<?php
+  function addTimestampe($url) {
+    return $url.'?v='.time();
+  }
+?>
 <!doctype html>
 <html class="no-js">
 @extends('header')
@@ -30,7 +35,7 @@
     </div>
 </div>
 
-<div class="am-panel am-panel-success">
+<div id="dest-index-list-section" class="am-panel am-panel-success">
     <div class="am-panel-hd">destination index list</div>
     <div class="am-panel-bd">
         <form class="am-form am-form-horizontal">
@@ -38,13 +43,22 @@
                 @foreach ($srcCollections as $srcIndex)
                     <div class="am-g am-g-fixed" id={{$srcIndex}} style="display: none;">
                         <label class="am-u-sm-4 am-form-label">{{$srcIndex}} <span class="am-icon-share"></span></label>
-                        <div class="am-u-sm-8 am-u-end">
+                        <div class="am-u-sm-5 am-u-end">
                             <select id={{$srcIndex."_sel"}}>
                                 @foreach ($destCollections as $destIndex)
                                     <option value={{$destIndex}}>{{$destIndex}}</option>
                                 @endforeach
                             </select>
                         </div>
+                        <a class="am-btn am-btn-link fields-toggle-btn switch-off">Show Src Index Fields</a>
+                        <ul class="am-avg-sm-4 fields-block">
+                            <!-- <label class="fields-item">
+                                <input type="checkbox" value="dev-ipro-stories"> dev-ipro-stories
+                            </label>
+                            <label class="fields-item">
+                                <input type="checkbox" value="dev-ipro-stories"> dev-ipro-stories
+                            </label> -->
+                        </ul>
                     </div>
                     @endforeach
             </div>
@@ -66,7 +80,7 @@
 
 <script src="/js/jquery.min.js"></script>
 <script src="/js/amazeui.min.js"></script>
-<script src="/js/copy.js"></script>
+<script src="{{addTimestampe('/js/copy.js')}}"></script>
 </body>
 @endsection
 </html>

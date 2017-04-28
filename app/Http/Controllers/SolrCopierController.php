@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
 use App\SolrModel\SolrModel;
 use App\Jobs\SolrIndexCopy;
 class SolrCopierController extends Controller{
-    
+
     public function getIndexList(Request $request){
         $srcIP = $request->input('srcIP');
         $srcPort = $request->input('srcPort');
@@ -54,10 +54,12 @@ class SolrCopierController extends Controller{
             ->cookie('srcPort', $srcPort, 20)->cookie('destHost', $destIP, 20)
             ->cookie('destPort', $destPort, 20);
     }
-    
+
     public function getFieldList(Request $request){
-        $srcIP = $request->input('srcIP');
-        $srcPort = $request->input('srcPort');
+        $srcIP = $request->cookie('srcHost');
+        $srcPort = $request->cookie('srcPort');
+        // $srcIP = $request->input('srcIP');
+        // $srcPort = $request->input('srcPort');
         $indexName = $request->input('indexName');
         $srcURL = "http://".$srcIP.":".$srcPort."/solr/".$indexName."/schema/fields?wt=json";
         $client = new GuzzleHttp\Client(['base_uri' => $srcURL, 'timeout'  => 2.0]);

@@ -163,6 +163,38 @@ class SolrModel extends SolrBaseModel
         return $returnObject;
     }
 
+    public function selectSortByPageWithCursorMark($sortField, $order, $rows, $cursorMark, $keyWord='Active:true')
+    {
+        $customizer = $this->client->getPlugin('customizerequest');
+        $customizer->createCustomization('cursorMark')
+            ->setType('param')
+            ->setName('cursorMark')
+            ->setValue($cursorMark);
+        $query = $this->client->createSelect();
+        $query->setQuery($keyWord);
+        $query->setRows($rows);
+        $query->setSorts([$sortField=>$order]);
+        // this executes the query and returns the result
+        $resultset = $this->client->select($query);
+        $numFound = $resultset->getNumFound();
+        // show documents using the resultset iterator
+        $list = array();
+        foreach ($resultset as $document) {
+            $item = new \stdClass();
+            // the documents are also iterable, to get all fields
+            foreach ($document as $field => $value) {
+                $item->$field = $value;
+            }
+            array_push($list, $item);
+        }
+
+        $returnObject = new \stdClass;
+        $returnObject->list = $list;
+        $returnObject->numFound = $numFound;
+        $returnObject->nextCursorMark = $resultset->getData()['nextCursorMark'];
+        return $returnObject;
+    }
+
     //CAUTION !!!
     //we cannot return the facet query result which is nothing directly 
     //we must use foreach ($facetResult as $key => $value)
@@ -451,27 +483,30 @@ class SolrModel extends SolrBaseModel
     {
         Log::info("----------------syncData START--------------------\n");
         foreach ($indexList as $index){
+            $index->src = 'dev-organizations';
+            $index->dest = 'dev-organizations';
             $fromIndex = new SolrModel($index->src);
             $fromIndex->setConfig($srcHost, $srcPort, $index->src);
             $toIndex = new SolrModel($index->dest);
             $toIndex->setConfig($destHost, $destPort, $index->dest);
             //delete all previous data or the data the query refers ???
             if($deletePreviousData){
-                $toIndex->delByQuery($query);
+//                $toIndex->delByQuery($query);
             }
-            $current = 0;
+            $done = false;
             $step = 100;
-            $returnObject = $fromIndex->selectByPage(0, $step, $query);
-            $total = $returnObject->numFound;
-
-            while($current < $total){
-                $persons = $fromIndex->selectByPage($current, $step, $query)->list;
-                $current += $step;
+            $cursorMark = '*';
+            while(!$done){
+                $returnObject = $fromIndex->selectSortByPageWithCursorMark('id', 'desc', $step, $cursorMark, $query)->list;
                 try {
-                    $toIndex->update($persons, false, true);
+                    $toIndex->update($returnObject->list, false, true);
                 } catch (Exception $e) {
-                    Log::info('[Sync Error] index='.$index.' start='.$current.' rows='.$step);
+                    Log::info('[Sync Error] index='.$index.'rows='.$step);
                 }
+                if($cursorMark == $returnObject->nextCursorMark)
+                    $done = true;
+                else
+                    $cursorMark = $returnObject->nextCursorMark;
             }
 
             Log::info("Sync from ".$index->src." to ".$index->dest." done.\n");

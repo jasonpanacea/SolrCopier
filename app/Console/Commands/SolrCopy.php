@@ -38,7 +38,7 @@ class SolrCopy extends Command
     public function handle()
     {
         //
-        SolrModel::syncData(json_decode('["dev-tags"]'), 'dev.solr.kapner.fitterweb.com', '8001', 'dev.solr.kapner.fitterweb.com','8001',  '*:*');
+        SolrModel::syncData(json_decode('[{"src":"dev-tags"},{"dest":"dev-tags"}]'), '127.0.0.1', '8983', '127.0.0.1', '8983',   '*:*');
 
     }
 }

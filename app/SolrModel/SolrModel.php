@@ -491,13 +491,13 @@ class SolrModel extends SolrBaseModel
             $toIndex->setConfig($destHost, $destPort, $index->dest);
             //delete all previous data or the data the query refers ???
             if($deletePreviousData){
-//                $toIndex->delByQuery($query);
+                $toIndex->delByQuery($query);
             }
             $done = false;
-            $step = 100;
+            $step = 1;
             $cursorMark = '*';
             while(!$done){
-                $returnObject = $fromIndex->selectSortByPageWithCursorMark('id', 'desc', $step, $cursorMark, $query)->list;
+                $returnObject = $fromIndex->selectSortByPageWithCursorMark('id', 'desc', $step, $cursorMark, $query);
                 try {
                     $toIndex->update($returnObject->list, false, true);
                 } catch (Exception $e) {

@@ -11,12 +11,12 @@
                 @foreach ($srcCollections as $index)
                     @if ($loop->last)
                         <label class="am-u-sm-6 am-u-end">
-                            <input type="checkbox" checked="checked" value={{$index}} > {{$index}}
+                            <input type="checkbox"  value={{$index}} > {{$index}}
                         </label>
 
                     @else
                         <label class="am-u-sm-6">
-                            <input type="checkbox" checked="checked" value={{$index}} > {{$index}}
+                            <input type="checkbox"  value={{$index}} > {{$index}}
                         </label>
                     @endif
                 @endforeach
@@ -36,7 +36,7 @@
         <form class="am-form am-form-horizontal">
             <div class="am-form-group am-g am-g-fixed">
                 @foreach ($srcCollections as $srcIndex)
-                    <div class="am-g am-g-fixed" id={{$srcIndex}}>
+                    <div class="am-g am-g-fixed" id={{$srcIndex}} style="display: none;">
                         <label class="am-u-sm-4 am-form-label">{{$srcIndex}} <span class="am-icon-share"></span></label>
                         <div class="am-u-sm-8 am-u-end">
                             <select id={{$srcIndex."_sel"}}>

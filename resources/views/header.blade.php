@@ -9,7 +9,7 @@
     <title>Solr Copier</title>
 
     <link rel="stylesheet" href="/css/amazeui.min.css">
-    <link rel="stylesheet" href="/css/amazeui.datatables.css"/>
+    <link rel="stylesheet" href="/css/amazeui.datatables.min.css"/>
 </head>
 
 <header class="am-topbar am-topbar-inverse am-topbar-fixed-top">

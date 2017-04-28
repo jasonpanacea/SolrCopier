@@ -483,8 +483,6 @@ class SolrModel extends SolrBaseModel
     {
         Log::info("----------------syncData START--------------------\n");
         foreach ($indexList as $index){
-            $index->src = 'dev-organizations';
-            $index->dest = 'dev-organizations';
             $fromIndex = new SolrModel($index->src);
             $fromIndex->setConfig($srcHost, $srcPort, $index->src);
             $toIndex = new SolrModel($index->dest);
@@ -494,14 +492,14 @@ class SolrModel extends SolrBaseModel
                 $toIndex->delByQuery($query);
             }
             $done = false;
-            $step = 1;
+            $step = 100;
             $cursorMark = '*';
             while(!$done){
                 $returnObject = $fromIndex->selectSortByPageWithCursorMark('id', 'desc', $step, $cursorMark, $query);
                 try {
                     $toIndex->update($returnObject->list, false, true);
                 } catch (Exception $e) {
-                    Log::info('[Sync Error] index='.$index.'rows='.$step);
+                    Log::info('[Sync Error] index='.$index);
                 }
                 if($cursorMark == $returnObject->nextCursorMark)
                     $done = true;

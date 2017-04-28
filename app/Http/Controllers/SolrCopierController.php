@@ -54,6 +54,26 @@ class SolrCopierController extends Controller{
             ->cookie('srcPort', $srcPort, 20)->cookie('destHost', $destIP, 20)
             ->cookie('destPort', $destPort, 20);
     }
+    
+    public function getFieldList(Request $request){
+        $srcIP = $request->input('srcIP');
+        $srcPort = $request->input('srcPort');
+        $indexName = $request->input('indexName');
+        $srcURL = "http://".$srcIP.":".$srcPort."/solr/".$indexName."/schema/fields?wt=json";
+        $client = new GuzzleHttp\Client(['base_uri' => $srcURL, 'timeout'  => 2.0]);
+        try{
+            $response = $client->request('GET');
+        } catch (RequestException $e){
+            return response()->json(['reason'=>'source solr does not exist']);
+        }
+        $statusCode = $response->getStatusCode();
+
+        //get source index fields data
+        $data = json_decode($response->getBody());
+        $fields = $data->fields;
+        return response()->json(['statusCode'=>$statusCode, 'fields'=>$fields]);
+
+    }
 
     public function copyPage(Request $request){
         $srcCollections = $request->cookie('srcCollections');

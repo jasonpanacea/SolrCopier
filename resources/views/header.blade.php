@@ -22,7 +22,8 @@
     <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">
         <ul class="am-nav am-nav-pills am-topbar-nav">
             <li class="am-active" id="home"><a href="/">Home</a></li>
-            <li id="jobList"><a href="/jobList">Jobs</a></li>
+            <li id="jobProgress"><a href="/jobProgress">Job Progress</a></li>
+            <li id="jobList"><a href="/jobList">History</a></li>
         </ul>
 
 

@@ -19,3 +19,4 @@ Route::post('getFieldList', 'SolrCopierController@getFieldList');
 Route::get('copyPage', 'SolrCopierController@copyPage');
 Route::post('startSyncJob', 'SolrCopierController@startSyncJob');
 Route::get('jobList', 'SolrCopierController@jobList');
+Route::get('jobProgress', 'SolrCopierController@jobProgress');

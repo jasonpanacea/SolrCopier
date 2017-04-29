@@ -147,4 +147,9 @@ class SolrCopierController extends Controller{
         $jobList  = CopyTask::all();
         return view('jobs',['jobList'=>$jobList]);
     }
+
+    public function jobProgress(Request $request) {
+        $jobList  = CopyTask::all();
+        return view('jobprogress',['jobList'=>$jobList]);
+    }
 }

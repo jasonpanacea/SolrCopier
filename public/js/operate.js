@@ -1,3 +1,36 @@
+var hostConfigHanlder = {
+    hostInfo : {
+        srcIP : '',
+        srcPort : '',
+        destIP : '',
+        destPort : ''
+    },
+    updateHostInfo : function() {
+        this.hostInfo = {
+            srcIP : $("#src-ip").val(),
+            srcPort : $("#src-port").val(),
+            destIP : $("#dest-ip").val(),
+            destPort : $("#dest-port").val()
+        };
+    },
+    getHostInfo : function() {
+        return this.hostInfo;
+    },
+    getIndexList : function(hostInfo) {
+        //need to verify the responese
+        $.post('/getIndexList', {'srcIP':hostInfo.srcIP, 'srcPort':hostInfo.srcPort, 'destIP':hostInfo.destIP, 'destPort':hostInfo.destPort}, function (data) {
+            if(data.srccode == 200 && data.destcode == 200){
+                // window.location.href = '/copyPage';
+                console.log(data);
+                copyHandler.setSrcIndexList(data.srcCollections);
+                copyHandler.setDestIndexList(data.srcCollections , data.destCollections);
+            }
+            else{
+                alert(data.reason);
+            }
+        });
+    },
+}
 
 $(function () {
     $.ajaxSetup({
@@ -6,24 +39,14 @@ $(function () {
         }
     });
     $("#next").click(function () {
-        var srcIP = $("#src-ip").val();
-        var srcPort = $("#src-port").val();
-        var destIP = $("#dest-ip").val();
-        var destPort = $("#dest-port").val();
+        hostConfigHanlder.updateHostInfo();
+        var hostInfo = hostConfigHanlder.getHostInfo();
         //need to verify port
-        if((isNaN(destPort)||isNaN(srcPort))){
+        if((isNaN(hostInfo.destPort)||isNaN(hostInfo.srcPort))){
             alert('wrong port input');
             return;
         }
-        //need to verify the responese
-        $.post('/getIndexList', {'srcIP':srcIP, 'srcPort':srcPort, 'destIP':destIP, 'destPort':destPort}, function (data) {
-            if(data.srccode == 200 && data.destcode == 200){
-                window.location.href = '/copyPage';
-            }
-            else{
-                alert(data.reason);
-            }
-        });
+        hostConfigHanlder.getIndexList(hostInfo);
     });
 
 });

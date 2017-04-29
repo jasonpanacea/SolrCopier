@@ -21,10 +21,20 @@ var copyHandler = {
             });
             $contentList += '</select></div>';
             $contentList += '<a class="am-btn am-btn-link fields-toggle-btn switch-off">Show Src Index Fields</a>';
-            $contentList += '<ul class="am-avg-sm-4 fields-block"></ul>';
+            $contentList += '<ul id="'+ srcItem +'-fields-block" class="am-avg-sm-4 fields-block"></ul>';
             $contentList += '</div>';
         });
         $("#destCollections-group").html("").append($contentList);
+    },
+    getOmitFields : function($fieldsBlock) {
+        var omitFields = [];
+        if ($fieldsBlock.is(":visible")) {
+            var listItem = $fieldsBlock.children().each(function(index, item) {
+                var $input = $(item).find("input");
+                if (!$input.prop("checked")) omitFields.push($input.val());
+            });
+        }
+        return omitFields;
     },
 };
 
@@ -43,8 +53,14 @@ $(function () {
 
         $('#srcCollections-group input[type="checkbox"]:checked').each(function(){
             var obj = new Object();
+            var $fieldsBlock = $("#"+$(this).val()+"-fields-block");
+            var omitFields = [];
             obj.src = $(this).val();
             obj.dest = $("#"+$(this).val()+"_sel").val();
+
+            omitFields = copyHandler.getOmitFields($fieldsBlock);
+            if (omitFields.length) obj.omitFields = omitFields;
+
             indexList.push(obj);
             console.log(indexList);
         });

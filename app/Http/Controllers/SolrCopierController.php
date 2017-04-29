@@ -131,10 +131,6 @@ class SolrCopierController extends Controller{
         $copyTask = new CopyTask();
         $copyTask->status = 'queued';
         $copyTask->indexList = json_encode($request->get('indexList'));
-        // $copyTask->srcHost = $request->cookie('srcHost');
-        // $copyTask->srcPort = $request->cookie('srcPort');
-        // $copyTask->destHost = $request->cookie('destHost');
-        // $copyTask->destPort = $request->cookie('destPort');
         $copyTask->srcHost = $request->get('srcHost');
         $copyTask->srcPort = $request->get('srcPort');
         $copyTask->destHost = $request->get('destHost');

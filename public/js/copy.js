@@ -39,6 +39,7 @@ $(function () {
         var HostInfo = hostConfigHanlder.getHostInfo();
         var query = $("#query").val();
         var batchSize = $("#batch-size").val();
+        var sortBy = $("#sort-by").val();
 
         $('#srcCollections-group input[type="checkbox"]:checked').each(function(){
             var obj = new Object();
@@ -61,6 +62,10 @@ $(function () {
         }
 
         if ($.trim(query)) {
+            postParam.query = query;
+        }
+
+        if ($.trim(sortBy)) {
             postParam.query = query;
         }
 

@@ -68,14 +68,27 @@
     </div>
 </div>
 <div class="am-g am-form-group">
-    <label for="query" class="am-u-sm-2 am-form-label">Solr Query</label>
-    <div class="am-u-sm-4 am-u-end">
-        <input type="text" id="query" placeholder="">
-    </div>
-    <label for="query" class="am-u-sm-2 am-form-label">Batch Size</label>
-    <div class="am-u-sm-4 am-u-end">
-        <input type="text" id="batch-size" placeholder="">
-    </div>
+    <ul class="am-avg-sm-2">
+        <li>
+            <label for="query" class="am-u-sm-2 am-form-label">Solr Query</label>
+            <div class="am-u-sm-4 am-u-end">
+                <input type="text" id="query" placeholder="">
+            </div>
+        </li>
+        <li>
+            <label for="query" class="am-u-sm-2 am-form-label">Batch Size</label>
+            <div class="am-u-sm-4 am-u-end">
+                <input type="text" id="batch-size" placeholder="">
+            </div>
+        </li>
+        <li>
+            <label for="query" class="am-u-sm-2 am-form-label">Sort By</label>
+            <div class="am-u-sm-4 am-u-end">
+                <input type="text" id="sort-by" placeholder="">
+            </div>
+        </li>
+    </ul>
+
 </div>
 <div class="am-g am-form-group">
     <span class="am-u-sm-2 am-u-end">

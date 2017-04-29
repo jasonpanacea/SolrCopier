@@ -8,7 +8,7 @@
 @extends('header')
 @section('content')
 <body>
-<form class="am-form am-form-horizontal">
+<form class="am-form am-form-horizontal" style="margin-top:2em;">
     <div class="am-form-group">
         <label for="src-ip" class="am-u-sm-2 am-form-label">Source Solr IP</label>
         <span class="am-u-sm-4">

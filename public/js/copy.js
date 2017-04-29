@@ -66,7 +66,7 @@ $(function () {
         }
 
         if ($.trim(sortBy)) {
-            postParam.query = query;
+            postParam.sort = sortBy;
         }
 
         $.post('/startSyncJob',postParam, function (data) {

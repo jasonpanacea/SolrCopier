@@ -7,6 +7,7 @@
  * Time: 2:34 PM
  */
 namespace App\SolrModel;
+use App\Util\SolrUtils;
 use Illuminate\Support\Facades\Log;
 use Solarium;
 class SolrModel extends SolrBaseModel
@@ -220,7 +221,8 @@ class SolrModel extends SolrBaseModel
      * @param $item
      * @return int
      */
-    public function update($data, $refreshUpdateDate=true, $commitWithin=false){
+    public function update($data, $refreshUpdateDate=true, $commitWithin=false, $omitFields=[]){
+        $omitFields = array_merge($omitFields, SolrBaseModel::$OMIT_FIELDS);
         $docList = [];
         if(is_array($data) && isset($data[0])) { //$data is array
             $itemList = $data;
@@ -253,7 +255,7 @@ class SolrModel extends SolrBaseModel
             $doc = $update->createDocument();
             foreach ($item as $field => $value){
                 //upadte data with some fields will cause conflict
-                if(in_array($field, SolrBaseModel::$OMIT_FIELDS)) continue;
+                if(in_array($field, $omitFields)) continue;
                 if (is_array($value)) {
                     $arr = array();
                     foreach ($value as $v){
@@ -479,7 +481,7 @@ class SolrModel extends SolrBaseModel
     }
 
 
-    public static function syncData($indexList, $srcHost, $srcPort, $destHost, $destPort, $query = "*:*", $deletePreviousData = true)
+    public static function syncData($indexList, $srcHost, $srcPort, $destHost, $destPort, $batchSize, $query = "*:*", $deletePreviousData = true)
     {
         Log::info("----------------syncData START--------------------\n");
         foreach ($indexList as $index){
@@ -487,17 +489,20 @@ class SolrModel extends SolrBaseModel
             $fromIndex->setConfig($srcHost, $srcPort, $index->src);
             $toIndex = new SolrModel($index->dest);
             $toIndex->setConfig($destHost, $destPort, $index->dest);
+            if(isset($index->omitFields))
+                $omitFields = $index->omitFields;
+            else
+                $omitFields = [];
             //delete all previous data or the data the query refers ???
             if($deletePreviousData){
                 $toIndex->delByQuery($query);
             }
             $done = false;
-            $step = 100;
             $cursorMark = '*';
             while(!$done){
-                $returnObject = $fromIndex->selectSortByPageWithCursorMark('id', 'desc', $step, $cursorMark, $query);
+                $returnObject = $fromIndex->selectSortByPageWithCursorMark('id', 'desc', $batchSize, $cursorMark, $query);
                 try {
-                    $toIndex->update($returnObject->list, false, true);
+                    $toIndex->update($returnObject->list, false, true, $omitFields);
                 } catch (Exception $e) {
                     Log::info('[Sync Error] index='.$index);
                 }

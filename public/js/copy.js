@@ -1,3 +1,32 @@
+var copyHandler = {
+    setSrcIndexList : function(srcCollections) {
+        var $contentList = '';
+        srcCollections && srcCollections.forEach(function(item , index) {
+            if (index == (srcCollections.length - 1)) {
+                $contentList += '<label class="am-u-sm-6 am-u-end"><input type="checkbox"  value="'+item+'" ></input>'+item+'</label>';
+            } else {
+                $contentList += '<label class="am-u-sm-6"><input type="checkbox"  value="'+item+'" ></input>'+item+'</label>';
+            }
+        });
+        $("#srcCollections-group").html("").append($($contentList));
+    },
+    setDestIndexList : function(srcCollections , destCollections) {
+        var $contentList = '';
+        srcCollections && srcCollections.forEach(function(srcItem , index) {
+            $contentList += '<div class="am-g am-g-fixed" id='+srcItem+' style="display: none;">';
+            $contentList += '<label class="am-u-sm-4 am-form-label">'+srcItem+' <span class="am-icon-share"></span></label>';
+            $contentList += ' <div class="am-u-sm-5 am-u-end">' + '<select id='+srcItem+'."_sel"}}>';
+            destCollections && destCollections.forEach(function(destItem , index) {
+                $contentList += '<option value='+destItem+'>'+srcItem+'</option>';
+            });
+            $contentList += '</select></div>';
+            $contentList += '<a class="am-btn am-btn-link fields-toggle-btn switch-off">Show Src Index Fields</a>';
+            $contentList += '<ul class="am-avg-sm-4 fields-block"></ul>';
+            $contentList += '</div>';
+        });
+        $("#destCollections-group").html("").append($contentList);
+    },
+};
 
 $(function () {
     $.ajaxSetup({
@@ -19,7 +48,7 @@ $(function () {
         });
     });
 
-    $('input[type="checkbox"]').change(function () {
+    $("#srcCollections-group").on("change" , 'input[type="checkbox"]' , function () {
         if($(this).prop('checked')){
             $("#"+$(this).val()).show();
         }
@@ -53,9 +82,11 @@ $(function () {
 
         if (!toggoleFieldsBtn($(this))) return;
 
+        var HostInfo = hostConfigHanlder.getHostInfo();
+
         $.post('/getFieldList', {
-            // srcIP : ,
-            // srcPort : ,
+            srcIP : HostInfo.srcIP,
+            srcPort : HostInfo.srcPort,
             indexName : $selectInput.val(),
         }, function(data) {
             if (data.statusCode === 200) {

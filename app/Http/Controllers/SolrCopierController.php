@@ -16,7 +16,46 @@ use App\SolrModel\SolrModel;
 use App\Jobs\SolrIndexCopy;
 class SolrCopierController extends Controller{
 
-    public function getIndexList(Request $request){
+    // public function getIndexList(Request $request){
+    //     $srcIP = $request->input('srcIP');
+    //     $srcPort = $request->input('srcPort');
+    //     $destIP = $request->input('destIP');
+    //     $destPort = $request->input('destPort');
+    //     $srcURL = "http://".$srcIP.":".$srcPort."/solr/admin/collections?action=LIST&wt=json";
+    //     $destURL = "http://".$destIP.":".$destPort."/solr/admin/collections?action=LIST&wt=json";
+    //     $client = new GuzzleHttp\Client(['base_uri' => $srcURL, 'timeout'  => 2.0]);
+    //     try{
+    //         $response = $client->request('GET');
+    //     } catch (RequestException $e){
+    //         return response()->json(['reason'=>'source solr does not exist']);
+    //     }
+    //     $srccode = $response->getStatusCode();
+    //
+    //     //get source solr index data
+    //     $body = $response->getBody();
+    //     $data = json_decode($body);
+    //     $srcCollections = $data->collections;
+    //
+    //     try {
+    //         $client = new GuzzleHttp\Client(['base_uri' => $destURL, 'timeout'  => 2.0]);
+    //         $response = $client->request('GET');
+    //     } catch (RequestException $e){
+    //         return response()->json(['reason'=>'destination solr does not exist']);
+    //
+    //     }
+    //     $destcode = $response->getStatusCode();
+    //     //get source solr index data
+    //     $body = $response->getBody();
+    //     $data = json_decode($body);
+    //     $destCollections = $data->collections;
+    //
+    //     return response()->json(['srccode'=>$srccode,'destcode'=>$destcode])->cookie('srcCollections', $srcCollections, 2)
+    //         ->cookie('destCollections', $destCollections, 20)->cookie('srcHost', $srcIP, 20)
+    //         ->cookie('srcPort', $srcPort, 20)->cookie('destHost', $destIP, 20)
+    //         ->cookie('destPort', $destPort, 20);
+    // }
+
+    public function getIndexList(Request $request) {
         $srcIP = $request->input('srcIP');
         $srcPort = $request->input('srcPort');
         $destIP = $request->input('destIP');
@@ -49,17 +88,17 @@ class SolrCopierController extends Controller{
         $data = json_decode($body);
         $destCollections = $data->collections;
 
-        return response()->json(['srccode'=>$srccode,'destcode'=>$destcode])->cookie('srcCollections', $srcCollections, 2)
-            ->cookie('destCollections', $destCollections, 20)->cookie('srcHost', $srcIP, 20)
-            ->cookie('srcPort', $srcPort, 20)->cookie('destHost', $destIP, 20)
-            ->cookie('destPort', $destPort, 20);
+        return response()->json([
+                'srccode'=>$srccode,
+                'destcode'=>$destcode ,
+                'srcCollections' =>  $srcCollections,
+                'destCollections' => $destCollections
+            ]);
     }
 
     public function getFieldList(Request $request){
-        $srcIP = $request->cookie('srcHost');
-        $srcPort = $request->cookie('srcPort');
-        // $srcIP = $request->input('srcIP');
-        // $srcPort = $request->input('srcPort');
+        $srcIP = $request->input('srcIP');
+        $srcPort = $request->input('srcPort');
         $indexName = $request->input('indexName');
         $srcURL = "http://".$srcIP.":".$srcPort."/solr/".$indexName."/schema/fields?wt=json";
         $client = new GuzzleHttp\Client(['base_uri' => $srcURL, 'timeout'  => 2.0]);

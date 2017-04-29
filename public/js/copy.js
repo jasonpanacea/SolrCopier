@@ -36,7 +36,7 @@ $(function () {
     });
     $("#copy").click(function () {
         var indexList =[];
-        $('input[type="checkbox"]:checked').each(function(){
+        $('#srcCollections-group input[type="checkbox"]:checked').each(function(){
             var obj = new Object();
             obj.src = $(this).val();
             obj.dest = $("#"+$(this).val()+"_sel").val();

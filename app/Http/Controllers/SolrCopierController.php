@@ -92,6 +92,7 @@ class SolrCopierController extends Controller{
         $copyTask->srcPort = $request->cookie('srcPort');
         $copyTask->destHost = $request->cookie('destHost');
         $copyTask->destPort = $request->cookie('destPort');
+        $copyTask->batchSize = $request->get('batchSize', 100);
         $query = $request->get('query');
         if(empty($query) || $query== '')
             $query = '*:*';

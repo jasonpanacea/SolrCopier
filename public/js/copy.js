@@ -50,7 +50,7 @@ $(function () {
         $.post('/startSyncJob',{
             indexList:indexList,
             query:query ,
-            batchSize : ,
+            batchSize : batchSize,
             srcHost : HostInfo.srcIP ,
             srcPort : HostInfo.srcPort,
             destHost : HostInfo.destIP,

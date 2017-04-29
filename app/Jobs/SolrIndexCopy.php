@@ -35,8 +35,7 @@ class SolrIndexCopy implements ShouldQueue
         Log::info("start handle task: ".$this->task->id);
         $this->task->status = 'scheduled';
         $this->task->save();
-        SolrModel::syncData(json_decode($this->task->indexList), $this->task->srcHost, $this->task->srcPort,
-            $this->task->destHost, $this->task->destPort, $this->task->batchSize, $this->task->query);
+        SolrModel::syncData($this->task);
         Log::info("finish handle task: ".$this->task->id);
         $this->task->status = 'finished';
         $this->task->save();

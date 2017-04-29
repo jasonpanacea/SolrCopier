@@ -93,10 +93,8 @@ class SolrCopierController extends Controller{
         $copyTask->destHost = $request->cookie('destHost');
         $copyTask->destPort = $request->cookie('destPort');
         $copyTask->batchSize = $request->get('batchSize', 100);
-        $query = $request->get('query');
-        if(empty($query) || $query== '')
-            $query = '*:*';
-        $copyTask->query = $query;
+        $copyTask->query = $request->get('query', '*:*');
+        $copyTask->sort = $request->get('sort');
         $copyTask->save();
         $this->dispatch(new SolrIndexCopy($copyTask));
         return response()->json(['id'=>$copyTask->id]);

@@ -119,7 +119,7 @@ $(function () {
                 var fields = data.fields;
                 fields.forEach(function(currentValue) {
                     var $fieldItem = $fieldsBlock.append(
-                        $("<li><label class='fields-item'><input type='checkbox' value='" + currentValue.name +"'/>"+ currentValue.name +"</label></li>")
+                        $("<li><label class='fields-item'><input type='checkbox' checked='checked' value='" + currentValue.name +"'/>"+ currentValue.name +"</label></li>")
                     );
                 });
             } else {

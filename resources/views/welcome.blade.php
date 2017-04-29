@@ -33,7 +33,7 @@
 
     <div class="am-form-group">
         <div class="am-u-sm-2 am-u-sm-centered">
-            <button type="button" class="am-btn am-btn-primary am-radius" id="next">NEXT STEP</button>
+            <button type="button" class="am-btn am-btn-primary am-radius" id="next">UPDATE</button>
         </div>
     </div>
 

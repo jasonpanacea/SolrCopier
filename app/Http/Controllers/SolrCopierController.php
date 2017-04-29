@@ -112,7 +112,11 @@ class SolrCopierController extends Controller{
         //get source index fields data
         $data = json_decode($response->getBody());
         $fields = $data->fields;
-        return response()->json(['statusCode'=>$statusCode, 'fields'=>$fields]);
+        $filter_fields = [];
+        foreach ($fields as $key => $value) {
+            if (!(preg_match('/^_[\S]+/' , $value->name))) array_push($filter_fields , $value);
+        }
+        return response()->json(['statusCode'=>$statusCode, 'fields'=>$filter_fields]);
 
     }
 

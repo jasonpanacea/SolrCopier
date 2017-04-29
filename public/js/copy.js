@@ -15,7 +15,7 @@ var copyHandler = {
         srcCollections && srcCollections.forEach(function(srcItem , index) {
             $contentList += '<div class="am-g am-g-fixed" id='+srcItem+' style="display: none;">';
             $contentList += '<label class="am-u-sm-4 am-form-label">'+srcItem+' <span class="am-icon-share"></span></label>';
-            $contentList += ' <div class="am-u-sm-5 am-u-end">' + '<select id='+srcItem+'."_sel"}}>';
+            $contentList += ' <div class="am-u-sm-5 am-u-end">' + '<select id='+srcItem+'_sel>';
             destCollections && destCollections.forEach(function(destItem , index) {
                 $contentList += '<option value='+destItem+'>'+destItem+'</option>';
             });
@@ -45,17 +45,26 @@ $(function () {
             obj.src = $(this).val();
             obj.dest = $("#"+$(this).val()+"_sel").val();
             indexList.push(obj);
+            console.log(indexList);
         });
 
-        $.post('/startSyncJob',{
+        var postParam = {
             indexList:indexList,
-            query:query ,
-            batchSize : batchSize,
             srcHost : HostInfo.srcIP ,
             srcPort : HostInfo.srcPort,
             destHost : HostInfo.destIP,
             destPort : HostInfo.destPort
-        }, function (data) {
+        };
+
+        if ($.trim(batchSize)) {
+            postParam.batchSize = batchSize;
+        }
+
+        if ($.trim(query)) {
+            postParam.query = query;
+        }
+
+        $.post('/startSyncJob',postParam, function (data) {
             alert('the job has bee submitted');
         });
     });

@@ -17,7 +17,7 @@ var copyHandler = {
             $contentList += '<label class="am-u-sm-4 am-form-label">'+srcItem+' <span class="am-icon-share"></span></label>';
             $contentList += ' <div class="am-u-sm-5 am-u-end">' + '<select id='+srcItem+'."_sel"}}>';
             destCollections && destCollections.forEach(function(destItem , index) {
-                $contentList += '<option value='+destItem+'>'+srcItem+'</option>';
+                $contentList += '<option value='+destItem+'>'+destItem+'</option>';
             });
             $contentList += '</select></div>';
             $contentList += '<a class="am-btn am-btn-link fields-toggle-btn switch-off">Show Src Index Fields</a>';
@@ -36,14 +36,24 @@ $(function () {
     });
     $("#copy").click(function () {
         var indexList =[];
+        var HostInfo = hostConfigHanlder.getHostInfo();
+        var query = $("#query").val();
+
         $('#srcCollections-group input[type="checkbox"]:checked').each(function(){
             var obj = new Object();
             obj.src = $(this).val();
             obj.dest = $("#"+$(this).val()+"_sel").val();
             indexList.push(obj);
         });
-        var query = $("#query").val();
-        $.post('/startSyncJob',{'indexList':indexList, 'query':query}, function (data) {
+
+        $.post('/startSyncJob',{
+            indexList:indexList,
+            query:query ,
+            srcHost : HostInfo.srcIP ,
+            srcPort : HostInfo.srcPort,
+            destHost : HostInfo.destIP,
+            destPort : HostInfo.destPort
+        }, function (data) {
             alert('the job has bee submitted');
         });
     });

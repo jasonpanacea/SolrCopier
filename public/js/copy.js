@@ -38,6 +38,7 @@ $(function () {
         var indexList =[];
         var HostInfo = hostConfigHanlder.getHostInfo();
         var query = $("#query").val();
+        var batchSize = $("#batch-size").val();
 
         $('#srcCollections-group input[type="checkbox"]:checked').each(function(){
             var obj = new Object();
@@ -49,6 +50,7 @@ $(function () {
         $.post('/startSyncJob',{
             indexList:indexList,
             query:query ,
+            batchSize : ,
             srcHost : HostInfo.srcIP ,
             srcPort : HostInfo.srcPort,
             destHost : HostInfo.destIP,

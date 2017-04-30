@@ -152,6 +152,7 @@ $(function () {
 
         $.post('/startSyncJob',postParam, function (data) {
             alert('the job has bee submitted');
+            window.location = '/jobList';
         });
     });
 

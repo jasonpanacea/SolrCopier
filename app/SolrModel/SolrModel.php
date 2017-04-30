@@ -484,48 +484,38 @@ class SolrModel extends SolrBaseModel
     public static function syncData($task, $deletePreviousData = true)
     {
         Log::info("----------------syncData START--------------------\n");
-        $indexList = json_decode($task->indexList);
-        $sortField = $task->sortField;
-        $sortOrder = $task->sortOrder;
-        if(empty($sortField) || empty($sortOrder)){
-            $sortField = 'id';
-            $sortOrder = 'asc';
-        }
-
-        foreach ($indexList as $index){
-            $progress = new \stdClass();
-            $progress->index = $index;
-            $progress->copiedNumber = 0;
-
-            $fromIndex = new SolrModel($index->src);
-            $fromIndex->setConfig($task->srcHost, $task->srcPort, $index->src);
-            $toIndex = new SolrModel($index->dest);
-            $toIndex->setConfig($task->destHost, $task->destPort, $index->dest);
-            if(isset($index->omitFields))
-                $omitFields = $index->omitFields;
+        $jobs = $task->jobs();
+        foreach ($jobs as $job){
+            $job->status = 'scheduled';
+            $job->save();
+            $fromIndex = new SolrModel($job->src);
+            $fromIndex->setConfig($task->srcHost, $task->srcPort, $job->srcIndex);
+            $toIndex = new SolrModel($job->dest);
+            $toIndex->setConfig($task->destHost, $task->destPort, $job->destIndex);
+            if(isset($job->omitFields))
+                $omitFields = json_decode($job->omitFields);
             else
                 $omitFields = [];
 
             //delete all previous data or the data the query refers ???
             if($deletePreviousData){
-                $toIndex->delByQuery($task->query);
+                $toIndex->delByQuery($job->query);
             }
 
             $done = false;
             $cursorMark = '*';
             while(!$done){
-                $returnObject = $fromIndex->selectSortByPageWithCursorMark($sortField, $sortOrder, $task->batchSize, $cursorMark, $task->query);
-                if(empty($progress->totalNumber))
-                    $progress->totalNumber = $returnObject->numFound;
+                $returnObject = $fromIndex->selectSortByPageWithCursorMark($job->sortField, $job->sortOrder, $job->batchSize, $cursorMark, $job->query);
+                if($job->totalNumber == 0)
+                    $job->totalNumber = $returnObject->numFound;
                 try {
                     $toIndex->update($returnObject->list, false, true, $omitFields);
-                    $progress->copiedNumber += count($returnObject->list);
+                    $job->copiedNumber += count($returnObject->list);
                 } catch (Exception $e) {
-                    Log::info('[Sync Error] index='.$index);
+                    Log::info('[Sync Error] index='.$job->destIndex);
                 }
-                //update progess
-                $task->progess = json_encode($progress);
-                $task->save();
+                //update job progress
+                $job->save();
 
                 if($cursorMark == $returnObject->nextCursorMark)
                     $done = true;
@@ -533,7 +523,9 @@ class SolrModel extends SolrBaseModel
                     $cursorMark = $returnObject->nextCursorMark;
             }
 
-            Log::info("Sync from ".$index->src." to ".$index->dest." done.\n");
+            Log::info("Sync from ".$job->src." to ".$job->dest." done.\n");
+            $job->status = 'finished';
+            $job->save();
         }
         Log::info("----------------syncData END--------------------\n");
 

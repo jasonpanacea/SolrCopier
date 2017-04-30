@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use App\SolrModel\SolrModel;
-use App\CopyTask;
+use App\MysqlModel\CopyTask;
 class SolrIndexCopy implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;

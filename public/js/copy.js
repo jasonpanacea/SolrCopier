@@ -1,4 +1,5 @@
 var copyHandler = {
+    advancedSettings : {},
     setSrcIndexList : function(srcCollections) {
         var $contentList = '';
         srcCollections && srcCollections.forEach(function(item , index) {
@@ -21,7 +22,7 @@ var copyHandler = {
             });
             $contentList += '</select></div>';
             $contentList += '<a class="am-btn am-btn-link fields-toggle-btn switch-off">Show Src Index Fields</a>';
-            $contentList += '<a class="am-btn am-btn-link advanced-settings">Advanced Settings</a>';
+            $contentList += '<a class="am-btn am-btn-link advanced-settings" data-src-index="'+srcItem+'">Advanced Settings</a>';
             $contentList += '<ul id="'+ srcItem +'-fields-block" class="am-avg-sm-4 am-g-fixed am-u-sm-centered fields-block"></ul>';
             $contentList += '</div>';
         });
@@ -37,6 +38,23 @@ var copyHandler = {
         }
         return omitFields;
     },
+    getAdvancedSettings : function(srcIndex) {
+        return this.advancedSettings[srcIndex];
+    },
+    updateAdvancedSettings : function(srcIndex) {
+        var $advancedSettingsModel = $("#model-advanced-settings");
+        this.advancedSettings[srcIndex] = {
+            query : $advancedSettingsModel.find("#query").val(),
+            batchSize : $advancedSettingsModel.find("#batch-size").val(),
+            sortBy : $advancedSettingsModel.find("#sort-by").val(),
+        };
+    },
+    clearAdvancedSettings : function() {
+        var $advancedSettingsModel = $("#model-advanced-settings");
+        $advancedSettingsModel.find("input").each(function(ind, ele) {
+            $(ele).val("");
+        });
+    },
 };
 
 $(function () {
@@ -48,19 +66,31 @@ $(function () {
     $("#copy").click(function () {
         var indexList =[];
         var HostInfo = hostConfigHanlder.getHostInfo();
-        var query = $("#query").val();
-        var batchSize = $("#batch-size").val();
-        var sortBy = $("#sort-by").val();
+
 
         $('#srcCollections-group input[type="checkbox"]:checked').each(function(){
             var obj = new Object();
             var $fieldsBlock = $("#"+$(this).val()+"-fields-block");
             var omitFields = [];
+            var advancedSettings = copyHandler.getAdvancedSettings($(this).val());
+
             obj.src = $(this).val();
             obj.dest = $("#"+$(this).val()+"_sel").val();
 
             omitFields = copyHandler.getOmitFields($fieldsBlock);
             if (omitFields.length) obj.omitFields = omitFields;
+
+            if ($.trim(advancedSettings.batchSize)) {
+                obj.batchSize = advancedSettings.batchSize;
+            }
+
+            if ($.trim(advancedSettings.query)) {
+                obj.query = advancedSettings.query;
+            }
+
+            if ($.trim(advancedSettings.sortBy)) {
+                obj.sort = advancedSettings.sortBy;
+            }
 
             indexList.push(obj);
             console.log(indexList);
@@ -73,18 +103,6 @@ $(function () {
             destHost : HostInfo.destIP,
             destPort : HostInfo.destPort
         };
-
-        if ($.trim(batchSize)) {
-            postParam.batchSize = batchSize;
-        }
-
-        if ($.trim(query)) {
-            postParam.query = query;
-        }
-
-        if ($.trim(sortBy)) {
-            postParam.sort = sortBy;
-        }
 
         $.post('/startSyncJob',postParam, function (data) {
             alert('the job has bee submitted');
@@ -117,6 +135,20 @@ $(function () {
                $("#"+$(this).val()).show();
            });
        }
+    });
+
+    $("#dest-index-list-section").on("click" , ".advanced-settings" , function(event) {
+        copyHandler.clearAdvancedSettings();
+        $('#model-advanced-settings').modal({
+            relatedTarget : $(this),
+            onConfirm: function(e) {
+                console.log(this.relatedTarget);
+                copyHandler.updateAdvancedSettings(this.relatedTarget.attr("data-src-index"));
+            },
+            onCancel: function(e) {
+              copyHandler.clearAdvancedSettings();
+            }
+        });
     });
 
     $("#dest-index-list-section").on("click" , ".fields-toggle-btn" ,function(event) {

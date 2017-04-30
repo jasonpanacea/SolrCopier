@@ -63,32 +63,42 @@
     </div>
 </div>
 <div class="am-g am-form-group">
-    <ul class="am-avg-sm-2">
-        <li>
-            <label for="query" class="am-u-sm-2 am-form-label">Solr Query</label>
-            <div class="am-u-sm-4 am-u-end">
-                <input type="text" id="query" placeholder="">
-            </div>
-        </li>
-        <li>
-            <label for="query" class="am-u-sm-2 am-form-label">Batch Size</label>
-            <div class="am-u-sm-4 am-u-end">
-                <input type="text" id="batch-size" placeholder="">
-            </div>
-        </li>
-        <li>
-            <label for="query" class="am-u-sm-2 am-form-label">Sort By</label>
-            <div class="am-u-sm-4 am-u-end">
-                <input type="text" id="sort-by" placeholder="">
-            </div>
-        </li>
-    </ul>
-
-</div>
-<div class="am-g am-form-group">
     <span class="am-u-sm-2 am-u-end">
         <button type="button" class="am-btn am-btn-danger am-radius" id="copy">SUBMIT SYNC JOB</button>
     </span>
+</div>
+
+<!-- Model -->
+<div class="am-modal am-modal-prompt" tabindex="-1" id="model-advanced-settings">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd">Advanced Settings</div>
+    <div class="am-modal-bd">
+        <ul class="am-avg-sm-1">
+            <li>
+                <label for="query" class="am-u-sm-4 am-form-label">Solr Query</label>
+                <div class="am-u-sm-4 am-u-end">
+                    <input type="text" id="query" placeholder="">
+                </div>
+            </li>
+            <li>
+                <label for="query" class="am-u-sm-4 am-form-label">Batch Size</label>
+                <div class="am-u-sm-4 am-u-end">
+                    <input type="text" id="batch-size" placeholder="">
+                </div>
+            </li>
+            <li>
+                <label for="query" class="am-u-sm-4 am-form-label">Sort By</label>
+                <div class="am-u-sm-4 am-u-end">
+                    <input type="text" id="sort-by" placeholder="">
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="am-modal-footer">
+      <span class="am-modal-btn" data-am-modal-cancel>Cancel</span>
+      <span class="am-modal-btn" data-am-modal-confirm>Confirm</span>
+    </div>
+  </div>
 </div>
 
 <script src="/js/operate.js?v=<?php echo time()?>"></script>

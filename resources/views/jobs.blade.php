@@ -1,8 +1,3 @@
-<?php
-  function addTimestampe($url) {
-    return $url.'?v='.time();
-  }
-?>
 <!doctype html>
 <html class="no-js">
 @extends('header')
@@ -41,10 +36,8 @@
         @endforeach
         </tbody>
     </table>
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/amazeui.min.js"></script>
     <script src="/js/amazeui.datatables.min.js"></script>
-    <script src ="{{ addTimestampe('/js/jobs.js') }}"></script>
+    <script src ="/js/jobs.js?v=<?php echo time()?>"></script>
     </body>
 @endsection
 

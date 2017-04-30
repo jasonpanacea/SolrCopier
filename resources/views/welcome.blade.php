@@ -1,8 +1,3 @@
-<?php
-  function addTimestampe($url) {
-    return $url.'?v='.time();
-  }
-?>
 <!doctype html>
 <html class="no-js">
 @extends('header')
@@ -96,12 +91,8 @@
     </span>
 </div>
 
-
-
-<script src="/js/jquery.min.js"></script>
-<script src="/js/amazeui.min.js"></script>
-<script src="{{addTimestampe('/js/operate.js')}}"></script>
-<script src="{{addTimestampe('/js/copy.js')}}"></script>
+<script src="/js/operate.js?v=<?php echo time()?>"></script>
+<script src="/js/copy.js?v=<?php echo time()?>"></script>
 </body>
 @endsection
 

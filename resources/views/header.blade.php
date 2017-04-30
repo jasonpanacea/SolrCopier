@@ -10,6 +10,9 @@
 
     <link rel="stylesheet" href="/css/amazeui.min.css">
     <link rel="stylesheet" href="/css/amazeui.datatables.min.css"/>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/amazeui.min.js"></script>
+    <script src="/js/head.js?v=<?php echo time()?>"></script>
 </head>
 
 <header class="am-topbar am-topbar-inverse am-topbar-fixed-top">
@@ -36,4 +39,5 @@
         </div>
     </div>
 </header>
+
 @yield('content')

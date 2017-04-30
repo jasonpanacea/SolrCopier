@@ -58,9 +58,13 @@ var copyHandler = {
         var $advancedSettingsModel = $("#model-advanced-settings");
         var $sortByGroup = $("#sort-by-group");
         var sortByArr = [];
-        $sortByGroup.children("div[class='^sort-by-item']").each(function() {
+        $sortByGroup.children("div").each(function() {
             var $currentItem = $(this);
-            var sortField = $currentItem.find(".sort-field").val();
+            var sortField = '';
+            if ($currentItem.hasClass("sort-by-item-fixed"))
+                sortField = 'id';
+            else
+                sortField = $currentItem.find(".sort-field").val();
             var sortOrder = $currentItem.find(".sort-order").val();
             sortByArr.push({
                 sortField : sortField,

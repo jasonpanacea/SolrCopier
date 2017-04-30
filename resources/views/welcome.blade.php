@@ -90,7 +90,7 @@
                 <label for="query" class="am-u-sm-4 am-form-label">Sort By</label>
                 <div id="sort-by-group" class="am-u-sm-8 am-u-end">
                     <div class="am-g sort-by-item-fixed">
-                        <select class="am-fl sort-field" disabled="disabled"><option value="id">id</option></select>
+                        <span class="am-fl am-inline-block sort-field" style="margin-right:10px;">id</span>
                         <select class="am-fl sort-order"><option value="asc">asc</option><option value="desc">desc</option></select>
                     </div>
                 </div>

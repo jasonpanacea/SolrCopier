@@ -127,7 +127,16 @@ class SolrCopierController extends Controller{
     }
 
     public function jobProgress(Request $request) {
-        $jobList  = CopyJob::where('status','scheduled')->get();
-        return response()->json(['jobList'=>$jobList]);
+        // $jobList  = CopyJob::where('status','scheduled')->get();
+        $jobList  = CopyJob::all();
+        $filterJobList = array();
+        foreach ($jobList as $key => $value) {
+            $item = new \stdClass();
+            $item->copiedNumber = $value->copiedNumber;
+            $item->totalNumber = $value->totalNumber;
+            $value->progress = $item;
+            array_push($filterJobList , $value);
+        }
+        return response()->json(['data' => $filterJobList]);
     }
 }

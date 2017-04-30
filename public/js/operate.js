@@ -38,6 +38,7 @@ $(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    $('#home').addClass('am-active').siblings("li").removeClass("am-active");
     $("#next").click(function () {
         hostConfigHanlder.updateHostInfo();
         var hostInfo = hostConfigHanlder.getHostInfo();

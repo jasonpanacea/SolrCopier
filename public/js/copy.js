@@ -74,8 +74,8 @@ $(function () {
             var omitFields = [];
             var advancedSettings = copyHandler.getAdvancedSettings($(this).val());
 
-            obj.src = $(this).val();
-            obj.dest = $("#"+$(this).val()+"_sel").val();
+            obj.srcIndex = $(this).val();
+            obj.destIndex = $("#"+$(this).val()+"_sel").val();
 
             omitFields = copyHandler.getOmitFields($fieldsBlock);
             if (omitFields.length) obj.omitFields = omitFields;

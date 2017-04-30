@@ -112,7 +112,11 @@ class SolrCopierController extends Controller{
         //get source index fields data
         $data = json_decode($response->getBody());
         $fields = $data->fields;
-        return response()->json(['statusCode'=>$statusCode, 'fields'=>$fields]);
+        $filter_fields = [];
+        foreach ($fields as $key => $value) {
+            if (!(preg_match('/^_[\S]+/' , $value->name))) array_push($filter_fields , $value);
+        }
+        return response()->json(['statusCode'=>$statusCode, 'fields'=>$filter_fields]);
 
     }
 
@@ -127,19 +131,13 @@ class SolrCopierController extends Controller{
         $copyTask = new CopyTask();
         $copyTask->status = 'queued';
         $copyTask->indexList = json_encode($request->get('indexList'));
-        // $copyTask->srcHost = $request->cookie('srcHost');
-        // $copyTask->srcPort = $request->cookie('srcPort');
-        // $copyTask->destHost = $request->cookie('destHost');
-        // $copyTask->destPort = $request->cookie('destPort');
         $copyTask->srcHost = $request->get('srcHost');
         $copyTask->srcPort = $request->get('srcPort');
         $copyTask->destHost = $request->get('destHost');
         $copyTask->destPort = $request->get('destPort');
         $copyTask->batchSize = $request->get('batchSize', 100);
-        $query = $request->get('query');
-        if(empty($query) || $query== '')
-            $query = '*:*';
-        $copyTask->query = $query;
+        $copyTask->query = $request->get('query', '*:*');
+        $copyTask->sort = $request->get('sort');
         $copyTask->save();
         $this->dispatch(new SolrIndexCopy($copyTask));
         return response()->json(['id'=>$copyTask->id]);
@@ -148,5 +146,10 @@ class SolrCopierController extends Controller{
     public function jobList(Request $request){
         $jobList  = CopyTask::all();
         return view('jobs',['jobList'=>$jobList]);
+    }
+
+    public function jobProgress(Request $request) {
+        $jobList  = CopyTask::all();
+        return view('jobprogress',['jobList'=>$jobList]);
     }
 }

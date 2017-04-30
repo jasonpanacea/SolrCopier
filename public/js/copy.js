@@ -15,16 +15,26 @@ var copyHandler = {
         srcCollections && srcCollections.forEach(function(srcItem , index) {
             $contentList += '<div class="am-g am-g-fixed" id='+srcItem+' style="display: none;">';
             $contentList += '<label class="am-u-sm-4 am-form-label">'+srcItem+' <span class="am-icon-share"></span></label>';
-            $contentList += ' <div class="am-u-sm-5 am-u-end">' + '<select id='+srcItem+'."_sel"}}>';
+            $contentList += ' <div class="am-u-sm-5 am-u-end">' + '<select id='+srcItem+'_sel>';
             destCollections && destCollections.forEach(function(destItem , index) {
                 $contentList += '<option value='+destItem+'>'+destItem+'</option>';
             });
             $contentList += '</select></div>';
             $contentList += '<a class="am-btn am-btn-link fields-toggle-btn switch-off">Show Src Index Fields</a>';
-            $contentList += '<ul class="am-avg-sm-4 fields-block"></ul>';
+            $contentList += '<ul id="'+ srcItem +'-fields-block" class="am-avg-sm-4 fields-block"></ul>';
             $contentList += '</div>';
         });
         $("#destCollections-group").html("").append($contentList);
+    },
+    getOmitFields : function($fieldsBlock) {
+        var omitFields = [];
+        if ($fieldsBlock.is(":visible")) {
+            var listItem = $fieldsBlock.children().each(function(index, item) {
+                var $input = $(item).find("input");
+                if (!$input.prop("checked")) omitFields.push($input.val());
+            });
+        }
+        return omitFields;
     },
 };
 
@@ -38,22 +48,44 @@ $(function () {
         var indexList =[];
         var HostInfo = hostConfigHanlder.getHostInfo();
         var query = $("#query").val();
+        var batchSize = $("#batch-size").val();
+        var sortBy = $("#sort-by").val();
 
         $('#srcCollections-group input[type="checkbox"]:checked').each(function(){
             var obj = new Object();
+            var $fieldsBlock = $("#"+$(this).val()+"-fields-block");
+            var omitFields = [];
             obj.src = $(this).val();
             obj.dest = $("#"+$(this).val()+"_sel").val();
+
+            omitFields = copyHandler.getOmitFields($fieldsBlock);
+            if (omitFields.length) obj.omitFields = omitFields;
+
             indexList.push(obj);
+            console.log(indexList);
         });
 
-        $.post('/startSyncJob',{
+        var postParam = {
             indexList:indexList,
-            query:query ,
             srcHost : HostInfo.srcIP ,
             srcPort : HostInfo.srcPort,
             destHost : HostInfo.destIP,
             destPort : HostInfo.destPort
-        }, function (data) {
+        };
+
+        if ($.trim(batchSize)) {
+            postParam.batchSize = batchSize;
+        }
+
+        if ($.trim(query)) {
+            postParam.query = query;
+        }
+
+        if ($.trim(sortBy)) {
+            postParam.sort = sortBy;
+        }
+
+        $.post('/startSyncJob',postParam, function (data) {
             alert('the job has bee submitted');
         });
     });
@@ -103,7 +135,7 @@ $(function () {
                 var fields = data.fields;
                 fields.forEach(function(currentValue) {
                     var $fieldItem = $fieldsBlock.append(
-                        $("<li><label class='fields-item'><input type='checkbox' value='" + currentValue.name +"'/>"+ currentValue.name +"</label></li>")
+                        $("<li><label class='fields-item'><input type='checkbox' checked='checked' value='" + currentValue.name +"'/>"+ currentValue.name +"</label></li>")
                     );
                 });
             } else {

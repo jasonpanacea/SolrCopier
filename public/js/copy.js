@@ -13,15 +13,16 @@ var copyHandler = {
     setDestIndexList : function(srcCollections , destCollections) {
         var $contentList = '';
         srcCollections && srcCollections.forEach(function(srcItem , index) {
-            $contentList += '<div class="am-g am-g-fixed" id='+srcItem+' style="display: none;">';
-            $contentList += '<label class="am-u-sm-4 am-form-label">'+srcItem+' <span class="am-icon-share"></span></label>';
-            $contentList += ' <div class="am-u-sm-5 am-u-end">' + '<select id='+srcItem+'_sel>';
+            $contentList += '<div class="am-g copy-pair-item" id='+srcItem+' style="display: none;">';
+            $contentList += '<label class="am-u-sm-3 am-form-label">'+srcItem+' <span class="am-icon-share"></span></label>';
+            $contentList += ' <div class="am-u-sm-3">' + '<select id='+srcItem+'_sel>';
             destCollections && destCollections.forEach(function(destItem , index) {
                 $contentList += '<option value='+destItem+'>'+destItem+'</option>';
             });
             $contentList += '</select></div>';
             $contentList += '<a class="am-btn am-btn-link fields-toggle-btn switch-off">Show Src Index Fields</a>';
-            $contentList += '<ul id="'+ srcItem +'-fields-block" class="am-avg-sm-4 fields-block"></ul>';
+            $contentList += '<a class="am-btn am-btn-link advanced-settings">Advanced Settings</a>';
+            $contentList += '<ul id="'+ srcItem +'-fields-block" class="am-avg-sm-4 am-g-fixed am-u-sm-centered fields-block"></ul>';
             $contentList += '</div>';
         });
         $("#destCollections-group").html("").append($contentList);
@@ -119,8 +120,9 @@ $(function () {
     });
 
     $("#dest-index-list-section").on("click" , ".fields-toggle-btn" ,function(event) {
-        var $fieldsBlock = $(this).next();
-        var $selectInput = $(this).prev().children('select');
+        var $copyPairItem = $(this).parents(".copy-pair-item");
+        var $fieldsBlock = $copyPairItem.find(".fields-block");
+        var $selectInput = $copyPairItem.find('select');
 
         if (!toggoleFieldsBtn($(this))) return;
 
@@ -150,7 +152,7 @@ $(function () {
         if ($fieldsToggleBtn.hasClass("switch-off")) {
             $fieldsToggleBtn.removeClass("switch-off").addClass("switch-on").text("Hide Src Index Fields");
         } else {
-            $fieldsToggleBtn.next(".fields-block").html("");
+            $fieldsToggleBtn.siblings(".fields-block").html("");
             $fieldsToggleBtn.removeClass("switch-on").addClass("switch-off").text("Show Src Index Fields");
         }
         return $fieldsToggleBtn.hasClass("switch-on");

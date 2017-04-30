@@ -55,7 +55,7 @@
     <div class="am-panel-hd">destination index list</div>
     <div class="am-panel-bd">
         <form class="am-form am-form-horizontal">
-            <div id="destCollections-group" class="am-form-group am-g am-g-fixed">
+            <div id="destCollections-group" class="am-form-group am-g">
                 <!-- Two loops here. -->
             </div>
 

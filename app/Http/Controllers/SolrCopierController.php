@@ -95,7 +95,7 @@ class SolrCopierController extends Controller{
         $copyTask->destHost = $request->get('destHost');
         $copyTask->destPort = $request->get('destPort');
         $copyTask->save();
-        $indexList = json_encode($request->get('indexList'));
+        $indexList = $request->get('indexList');
         foreach ($indexList as $index){
             $copyJob = new CopyJob();
             foreach ($index as $key=>$value)

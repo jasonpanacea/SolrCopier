@@ -39,7 +39,20 @@ var copyHandler = {
         return omitFields;
     },
     getAdvancedSettings : function(srcIndex) {
-        return this.advancedSettings[srcIndex];
+        if (typeof this.advancedSettings[srcIndex] != "undefined")
+            return this.advancedSettings[srcIndex];
+        else
+            return {};
+    },
+    setAdvancedSettings : function(srcIndex) {
+        var advancedSettings = this.getAdvancedSettings(srcIndex);
+        var $advancedSettingsModel = $("#model-advanced-settings");
+        if (advancedSettings.query)
+            $advancedSettingsModel.find("#query").val(advancedSettings.query);
+        if (advancedSettings.batchSize)
+            $advancedSettingsModel.find("#batch-size").val(advancedSettings.batchSize);
+        if (advancedSettings.sortBy)
+            $advancedSettingsModel.find("#sort-by").val(advancedSettings.sortBy);
     },
     updateAdvancedSettings : function(srcIndex) {
         var $advancedSettingsModel = $("#model-advanced-settings");
@@ -138,7 +151,9 @@ $(function () {
     });
 
     $("#dest-index-list-section").on("click" , ".advanced-settings" , function(event) {
+        var srcIndex = $(this).attr("data-src-index");
         copyHandler.clearAdvancedSettings();
+        copyHandler.setAdvancedSettings(srcIndex);
         $('#model-advanced-settings').modal({
             relatedTarget : $(this),
             onConfirm: function(e) {

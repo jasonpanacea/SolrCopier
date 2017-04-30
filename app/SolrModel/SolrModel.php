@@ -164,7 +164,7 @@ class SolrModel extends SolrBaseModel
         return $returnObject;
     }
 
-    public function selectSortByPageWithCursorMark($sortField, $order, $rows, $cursorMark, $keyWord='Active:true')
+    public function selectSortByPageWithCursorMark($sort, $rows, $cursorMark, $keyWord='Active:true')
     {
         $customizer = $this->client->getPlugin('customizerequest');
         $customizer->createCustomization('cursorMark')
@@ -174,7 +174,7 @@ class SolrModel extends SolrBaseModel
         $query = $this->client->createSelect();
         $query->setQuery($keyWord);
         $query->setRows($rows);
-        $query->setSorts([$sortField=>$order]);
+        $query->setSorts($sort);
         // this executes the query and returns the result
         $resultset = $this->client->select($query);
         $numFound = $resultset->getNumFound();
@@ -484,8 +484,7 @@ class SolrModel extends SolrBaseModel
     public static function syncData($task, $deletePreviousData = true)
     {
         Log::info("----------------syncData START--------------------\n");
-        $jobs = $task->jobs();
-        foreach ($jobs as $job){
+        foreach ($task->jobs as $job){
             $job->status = 'scheduled';
             $job->save();
             $fromIndex = new SolrModel($job->src);
@@ -505,7 +504,7 @@ class SolrModel extends SolrBaseModel
             $done = false;
             $cursorMark = '*';
             while(!$done){
-                $returnObject = $fromIndex->selectSortByPageWithCursorMark($job->sortField, $job->sortOrder, $job->batchSize, $cursorMark, $job->query);
+                $returnObject = $fromIndex->selectSortByPageWithCursorMark(json_decode($job->sort, true), $job->batchSize, $cursorMark, $job->query);
                 if($job->totalNumber == 0)
                     $job->totalNumber = $returnObject->numFound;
                 try {

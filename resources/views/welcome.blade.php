@@ -70,7 +70,7 @@
 
 <!-- Model -->
 <div class="am-modal am-modal-prompt" tabindex="-1" id="model-advanced-settings">
-  <div class="am-modal-dialog">
+  <div class="am-modal-dialog" style="width:600px;">
     <div class="am-modal-hd">Advanced Settings</div>
     <div class="am-modal-bd">
         <ul class="am-avg-sm-1">
@@ -88,8 +88,11 @@
             </li>
             <li>
                 <label for="query" class="am-u-sm-4 am-form-label">Sort By</label>
-                <div class="am-u-sm-4 am-u-end">
-                    <input type="text" id="sort-by" placeholder="">
+                <div id="sort-by-group" class="am-u-sm-8 am-u-end">
+                    <div class="am-g sort-by-item-fixed">
+                        <select class="am-fl sort-field" disabled="disabled"><option value="id">id</option></select>
+                        <select class="am-fl sort-order"><option value="asc">asc</option><option value="desc">desc</option></select>
+                    </div>
                 </div>
             </li>
         </ul>

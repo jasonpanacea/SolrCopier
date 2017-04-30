@@ -56,16 +56,42 @@ var copyHandler = {
     },
     updateAdvancedSettings : function(srcIndex) {
         var $advancedSettingsModel = $("#model-advanced-settings");
+        var $sortByGroup = $("#sort-by-group");
+        var sortByArr = [];
+        $sortByGroup.children("div[class='^sort-by-item']").each(function() {
+            var $currentItem = $(this);
+            var sortField = $currentItem.find(".sort-field").val();
+            var sortOrder = $currentItem.find(".sort-order").val();
+            sortByArr.push({
+                sortField : sortField,
+                sortOrder : sortOrder
+            });
+        });
         this.advancedSettings[srcIndex] = {
             query : $advancedSettingsModel.find("#query").val(),
             batchSize : $advancedSettingsModel.find("#batch-size").val(),
-            sortBy : $advancedSettingsModel.find("#sort-by").val(),
+            sortBy : sortByArr,
         };
     },
     clearAdvancedSettings : function() {
         var $advancedSettingsModel = $("#model-advanced-settings");
         $advancedSettingsModel.find("input").each(function(ind, ele) {
             $(ele).val("");
+        });
+    },
+    getFieldList : function(indexName , callback) {
+        var HostInfo = hostConfigHanlder.getHostInfo();
+        $.post('/getFieldList', {
+            srcIP : HostInfo.srcIP,
+            srcPort : HostInfo.srcPort,
+            indexName : indexName,
+        }, function(data) {
+            if (data.statusCode === 200) {
+                callback(null , data);
+            } else {
+                callback({error: data});
+            }
+            // console.log(data);
         });
     },
 };
@@ -152,16 +178,34 @@ $(function () {
 
     $("#dest-index-list-section").on("click" , ".advanced-settings" , function(event) {
         var srcIndex = $(this).attr("data-src-index");
+        var $currentListItem = $(this);
         copyHandler.clearAdvancedSettings();
         copyHandler.setAdvancedSettings(srcIndex);
-        $('#model-advanced-settings').modal({
-            relatedTarget : $(this),
-            onConfirm: function(e) {
-                console.log(this.relatedTarget);
-                copyHandler.updateAdvancedSettings(this.relatedTarget.attr("data-src-index"));
-            },
-            onCancel: function(e) {
-              copyHandler.clearAdvancedSettings();
+        copyHandler.getFieldList(srcIndex , function(reason , data) {
+            if (reason) {
+                alert(reason.error);return;
+            } else {
+                var fields = data.fields;
+                var sortItem = '<div class="am-g sort-by-item"><select class="am-fl">';
+                fields.forEach(function(value , index) {
+                    sortItem += '<option value="'+value.name+'">'+value.name+'</option>';
+                });
+                sortItem += '</select><select class="am-fl"><option value="asc">asc</option><option value="desc">desc</option></select>';
+                sortItem += '</div>';
+                $("#sort-by-group").find(".sort-by-item").each(function() {
+                    $(this).remove();
+                });
+                $("#sort-by-group").append($(sortItem));
+                $('#model-advanced-settings').modal({
+                    relatedTarget : $currentListItem,
+                    onConfirm: function(e) {
+                        console.log(this.relatedTarget);
+                        copyHandler.updateAdvancedSettings(this.relatedTarget.attr("data-src-index"));
+                    },
+                    onCancel: function(e) {
+                      copyHandler.clearAdvancedSettings();
+                    }
+                });
             }
         });
     });
@@ -173,26 +217,19 @@ $(function () {
 
         if (!toggoleFieldsBtn($(this))) return;
 
-        var HostInfo = hostConfigHanlder.getHostInfo();
-
-        $.post('/getFieldList', {
-            srcIP : HostInfo.srcIP,
-            srcPort : HostInfo.srcPort,
-            indexName : $selectInput.val(),
-        }, function(data) {
-            if (data.statusCode === 200) {
+        copyHandler.getFieldList($selectInput.val() , function(reason , data) {
+            if (reason) {
+                alert(reason.error);
+                return;
+            } else {
                 var fields = data.fields;
                 fields.forEach(function(currentValue) {
                     var $fieldItem = $fieldsBlock.append(
                         $("<li><label class='fields-item'><input type='checkbox' checked='checked' value='" + currentValue.name +"'/>"+ currentValue.name +"</label></li>")
                     );
                 });
-            } else {
-                alert(data);
             }
-            // console.log(data);
         });
-
     });
 
     function toggoleFieldsBtn($fieldsToggleBtn) {

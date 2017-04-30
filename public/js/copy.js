@@ -30,7 +30,7 @@ var copyHandler = {
     },
     getOmitFields : function($fieldsBlock) {
         var omitFields = [];
-        if ($fieldsBlock.is(":visible")) {
+        if ($fieldsBlock.children()) {
             var listItem = $fieldsBlock.children().each(function(index, item) {
                 var $input = $(item).find("input");
                 if (!$input.prop("checked")) omitFields.push($input.val());

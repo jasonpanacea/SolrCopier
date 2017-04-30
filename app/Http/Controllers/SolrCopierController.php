@@ -99,10 +99,12 @@ class SolrCopierController extends Controller{
         foreach ($indexList as $index){
             $copyJob = new CopyJob();
             foreach ($index as $key=>$value)
-                $copyJob->$key = $value;
+                is_array($value)?
+                    $copyJob->$key = json_encode($value):$copyJob->$key = $value;
+
             $field_order_array = [];
             foreach (explode(',',$copyJob->sort) as $sort){
-                $kv = explode(' ',$sort);
+                $kv = explode(' ',trim($sort));
                 $field_order_array[$kv[0]] = $kv[1];
             }
             $copyJob->sort = json_encode($field_order_array);

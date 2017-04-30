@@ -2,10 +2,10 @@
  * Created by incpad on 1/16/17.
  */
 $(function() {
-    $('#jobList').addClass('am-active').siblings("li").removeClass("am-active");
+    $('#taskList').addClass('am-active').siblings("li").removeClass("am-active");
     //https://datatables.net/examples/basic_init/language
     //https://datatables.net/reference/option/language
-    $('#jobs').DataTable({
+    $('#tasks').DataTable({
         "language": {
             "lengthMenu": "Display _MENU_ records per page",
             "zeroRecords": "Nothing found - sorry",

@@ -7,15 +7,12 @@
         <thead>
         <tr>
             <th>ID</th>
-            <th>indexList</th>
+            <th>index</th>
             <th>srcHost</th>
             <th>srcPort</th>
             <th>destHost</th>
             <th>destPort</th>
-            <th>query</th>
-            <th>created_at</th>
-            <th>updated_at</th>
-            <th>status</th>
+            <th>progress</th>
         </tr>
         </thead>
 
@@ -23,15 +20,12 @@
         @foreach($jobList as $job)
         <tr class="odd gradeX">
             <td>{{$job->id}}</td>
-            <td>{{$job->indexList}}</td>
+            <td>src: "dev-story" dest:"dev-copy-story"</td>
             <td>{{$job->srcHost}}</td>
             <td>{{$job->srcPort}}</td>
             <td>{{$job->destHost}}</td>
             <td>{{$job->destPort}}</td>
-            <td>{{$job->query}}</td>
-            <td>{{$job->created_at}}</td>
-            <td>{{$job->updated_at}}</td>
-            <td>{{$job->status}}</td>
+            <td>566/1200</td>
         </tr>
         @endforeach
         </tbody>

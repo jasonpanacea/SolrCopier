@@ -132,7 +132,10 @@ $(function () {
             }
 
             if ($.trim(advancedSettings.sortBy)) {
-                obj.sort = advancedSettings.sortBy;
+                var sortArr =  advancedSettings.sortBy.map(function(value){
+                    return [value.sortField , value.sortOrder].join(" ");
+                });
+                obj.sort = sortArr.join(",");
             }
 
             indexList.push(obj);
@@ -190,11 +193,11 @@ $(function () {
                 alert(reason.error);return;
             } else {
                 var fields = data.fields;
-                var sortItem = '<div class="am-g sort-by-item"><select class="am-fl">';
+                var sortItem = '<div class="am-g sort-by-item"><select class="am-fl sort-field">';
                 fields.forEach(function(value , index) {
                     sortItem += '<option value="'+value.name+'">'+value.name+'</option>';
                 });
-                sortItem += '</select><select class="am-fl"><option value="asc">asc</option><option value="desc">desc</option></select>';
+                sortItem += '</select><select class="am-fl sort-order"><option value="asc">asc</option><option value="desc">desc</option></select>';
                 sortItem += '</div>';
                 $("#sort-by-group").find(".sort-by-item").each(function() {
                     $(this).remove();

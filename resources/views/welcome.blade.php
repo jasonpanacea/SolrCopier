@@ -3,7 +3,7 @@
 @extends('header')
 @section('content')
 <body>
-<div class="am-panel am-panel-secondary">
+<div class="am-panel am-panel-secondary" style="margin:0px;">
     <div class="am-panel-hd">Solr Host Information</div>
     <div class="am-panel-bd">
         <form class="am-form am-form-horizontal" style="margin-top:2em;">
@@ -41,7 +41,7 @@
 
 
 
-<div class="am-panel am-panel-secondary">
+<div class="am-panel am-panel-secondary" style="margin:0px;">
     <div class="am-panel-hd">source index list</div>
     <div class="am-panel-bd">
         <form class="am-form am-form-horizontal">

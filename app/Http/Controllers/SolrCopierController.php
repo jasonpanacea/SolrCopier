@@ -109,6 +109,8 @@ class SolrCopierController extends Controller{
             }
             if(empty($copyJob->query))
                 $copyJob->query = "*:*";
+            if(empty($copyJob->batchSize))
+                $copyJob->batchSize = 100;
             $copyJob->sort = json_encode($field_order_array);
             $copyJob->status = 'queued';
             $copyJob->taskID = $copyTask->id;

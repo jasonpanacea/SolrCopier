@@ -7,22 +7,22 @@
     <div class="am-form-group">
         <label for="src-ip" class="am-u-sm-2 am-form-label">Source Solr IP</label>
         <span class="am-u-sm-4">
-            <input type="text" id="src-ip" placeholder="" value="{{$taskInfo->srcHost}}">
+            <input type="text" id="src-ip" placeholder="" value="@if($taskInfo){{$taskInfo->srcHost}}@endif">
         </span>
         <label for="src-port" class="am-u-sm-1 am-form-label">PORT</label>
         <span class="am-u-sm-4 am-u-end">
-            <input type="text" id="src-port" placeholder="" value="{{$taskInfo->srcPort}}">
+            <input type="text" id="src-port" placeholder="" value="@if($taskInfo){{$taskInfo->srcPort}}@endif">
         </span>
     </div>
 
     <div class="am-form-group">
         <label for="dest-ip" class="am-u-sm-2 am-form-label">Destination Solr IP</label>
         <div class="am-u-sm-4 am-u-end">
-            <input type="text" id="dest-ip" placeholder="" value="{{$taskInfo->destHost}}">
+            <input type="text" id="dest-ip" placeholder="" value="@if($taskInfo){{$taskInfo->destHost}}@endif">
         </div>
         <label for="dest-port" class="am-u-sm-1 am-form-label">PORT</label>
          <span class="am-u-sm-4 am-u-end">
-            <input type="text" id="dest-port" placeholder="" value="{{$taskInfo->destPort}}">
+            <input type="text" id="dest-port" placeholder="" value="@if($taskInfo){{$taskInfo->destPort}}@endif">
         </span>
     </div>
 

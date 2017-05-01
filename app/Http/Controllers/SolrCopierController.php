@@ -22,7 +22,7 @@ class SolrCopierController extends Controller{
             $copyTask = CopyTask::find($taskID);
             return view('welcome',['taskInfo' => $copyTask]);
         } else {
-            return view('welcome');
+            return view('welcome', ['taskInfo' => null]);
         }
     }
 

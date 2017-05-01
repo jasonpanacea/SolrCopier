@@ -20,7 +20,8 @@ $(function() {
                 "next":       "Next",
                 "previous":   "Previous"
             },
-        }
+        },
+        order: [[7, "desc" ]]
     });
 
     $("#tasks").on("click" , ".show-jobs-btn" , function(event) {

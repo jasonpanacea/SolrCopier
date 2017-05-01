@@ -7,7 +7,7 @@
         <table class="am-table am-table-striped am-table-bordered am-table-compact" id="tasks">
             <thead>
             <tr>
-                <th>Edit</th>
+                <th>id</th>
                 <th>jobs</th>
                 <th>srcHost</th>
                 <th>srcPort</th>
@@ -23,7 +23,7 @@
             @foreach($taskList as $task)
             <tr class="odd gradeX">
                 <td>
-                    <a class="am-btn am-btn-link go-edit-btn" data-taskid="{{$task->id}}" href="/?taskID={{$task->id}}">Edit</a>
+                    <a class="am-btn am-btn-link go-edit-btn" data-taskid="{{$task->id}}" href="/?taskID={{$task->id}}">{{$task->id}}</a>
                 </td>
                 <td>
                     <a class="am-btn am-btn-link show-jobs-btn" data-taskid="{{$task->id}}" data-srchost="{{$task->srcHost}}" data-desthost="{{$task->destHost}}">Show Jobs</a>

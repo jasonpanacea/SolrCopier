@@ -11,6 +11,8 @@
                 <th>srcIndex</th>
                 <th>destIndex</th>
                 <th>progress</th>
+                <th>elapsed time</th>
+                <th>status</th>
             </tr>
             </thead>
         </table>

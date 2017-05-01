@@ -74,19 +74,19 @@
     <div class="am-modal-hd">Advanced Settings</div>
     <div class="am-modal-bd">
         <ul class="am-avg-sm-1">
-            <li>
+            <li class="am-margin-vertical-sm">
                 <label for="query" class="am-u-sm-4 am-form-label">Solr Query</label>
                 <div class="am-u-sm-4 am-u-end">
                     <input type="text" id="query" placeholder="">
                 </div>
             </li>
-            <li>
+            <li class="am-margin-vertical-sm">
                 <label for="query" class="am-u-sm-4 am-form-label">Batch Size</label>
                 <div class="am-u-sm-4 am-u-end">
                     <input type="text" id="batch-size" placeholder="">
                 </div>
             </li>
-            <li>
+            <li class="am-margin-vertical-sm">
                 <label for="query" class="am-u-sm-4 am-form-label">Sort By</label>
                 <div id="sort-by-group" class="am-u-sm-8 am-u-end">
                     <div class="am-g sort-by-item-fixed">

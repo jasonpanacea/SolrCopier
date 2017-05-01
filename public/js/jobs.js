@@ -56,7 +56,9 @@ $(function() {
                 render : function(data, type , row) {
                     return data.copiedNumber + '/' + data.totalNumber;
                 }
-            }
+            },
+            {data : 'elapsed'},
+            {data : 'status'}
         ],
     });
 

@@ -43,6 +43,10 @@ $(function () {
         hostConfigHanlder.updateHostInfo();
         var hostInfo = hostConfigHanlder.getHostInfo();
         //need to verify port
+        if (!checkIP(hostInfo.srcIP) || !checkIP(hostInfo.destIP)) {
+            alert('invalid host address.');
+            return;
+        }
         if((isNaN(hostInfo.destPort)||isNaN(hostInfo.srcPort))){
             alert('wrong port input');
             return;
@@ -54,7 +58,10 @@ $(function () {
 
 
 function checkIP(value){
-    var exp=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+    if (typeof value == "undefined") {
+        return false;
+    }
+    var exp=/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
     var reg = value.match(exp);
     if(reg==null)
     {
@@ -64,5 +71,8 @@ function checkIP(value){
 }
 
 function checkPort(value) {
+    if (typeof value == "undefined") {
+        return false;
+    }
     return isNaN()
 }

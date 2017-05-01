@@ -14,7 +14,7 @@ var copyHandler = {
     setDestIndexList : function(srcCollections , destCollections) {
         var $contentList = '';
         srcCollections && srcCollections.forEach(function(srcItem , index) {
-            $contentList += '<div class="am-g copy-pair-item" id='+srcItem+' style="display: none;">';
+            $contentList += '<div class="am-g copy-pair-item am-margin-vertical-sm" id='+srcItem+' style="display: none;">';
             $contentList += '<label class="am-u-sm-3 am-form-label">'+srcItem+' <span class="am-icon-share"></span></label>';
             $contentList += ' <div class="am-u-sm-3">' + '<select id='+srcItem+'_sel>';
             destCollections && destCollections.forEach(function(destItem , index) {
@@ -110,6 +110,7 @@ $(function () {
         var indexList =[];
         var HostInfo = hostConfigHanlder.getHostInfo();
 
+        $("#modal-loading").modal("open");
 
         $('#srcCollections-group input[type="checkbox"]:checked').each(function(){
             var obj = new Object();
@@ -151,6 +152,7 @@ $(function () {
         };
 
         $.post('/startSyncJob',postParam, function (data) {
+            $("#modal-loading").modal("close");
             alert('the job has bee submitted');
             window.location = '/jobList';
         });

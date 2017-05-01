@@ -3,36 +3,42 @@
 @extends('header')
 @section('content')
 <body>
-<form class="am-form am-form-horizontal" style="margin-top:2em;">
-    <div class="am-form-group">
-        <label for="src-ip" class="am-u-sm-2 am-form-label">Source Solr IP</label>
-        <span class="am-u-sm-4">
-            <input type="text" id="src-ip" placeholder="" value="@if($taskInfo){{$taskInfo->srcHost}}@endif">
-        </span>
-        <label for="src-port" class="am-u-sm-1 am-form-label">PORT</label>
-        <span class="am-u-sm-4 am-u-end">
-            <input type="text" id="src-port" placeholder="" value="@if($taskInfo){{$taskInfo->srcPort}}@endif">
-        </span>
-    </div>
+<div class="am-panel am-panel-secondary">
+    <div class="am-panel-hd">Solr Host Information</div>
+    <div class="am-panel-bd">
+        <form class="am-form am-form-horizontal" style="margin-top:2em;">
+            <div class="am-form-group">
+                <label for="src-ip" class="am-u-sm-2 am-form-label">Source Solr Host</label>
+                <span class="am-u-sm-4">
+                    <input type="text" id="src-ip" placeholder="" value="@if($taskInfo){{$taskInfo->srcHost}}@endif">
+                </span>
+                <label for="src-port" class="am-u-sm-1 am-form-label">PORT</label>
+                <span class="am-u-sm-4 am-u-end">
+                    <input type="text" id="src-port" placeholder="" value="@if($taskInfo){{$taskInfo->srcPort}}@endif">
+                </span>
+            </div>
 
-    <div class="am-form-group">
-        <label for="dest-ip" class="am-u-sm-2 am-form-label">Destination Solr IP</label>
-        <div class="am-u-sm-4 am-u-end">
-            <input type="text" id="dest-ip" placeholder="" value="@if($taskInfo){{$taskInfo->destHost}}@endif">
-        </div>
-        <label for="dest-port" class="am-u-sm-1 am-form-label">PORT</label>
-         <span class="am-u-sm-4 am-u-end">
-            <input type="text" id="dest-port" placeholder="" value="@if($taskInfo){{$taskInfo->destPort}}@endif">
-        </span>
-    </div>
+            <div class="am-form-group">
+                <label for="dest-ip" class="am-u-sm-2 am-form-label">Destination Solr Host</label>
+                <div class="am-u-sm-4 am-u-end">
+                    <input type="text" id="dest-ip" placeholder="" value="@if($taskInfo){{$taskInfo->destHost}}@endif">
+                </div>
+                <label for="dest-port" class="am-u-sm-1 am-form-label">PORT</label>
+                 <span class="am-u-sm-4 am-u-end">
+                    <input type="text" id="dest-port" placeholder="" value="@if($taskInfo){{$taskInfo->destPort}}@endif">
+                </span>
+            </div>
 
-    <div class="am-form-group">
-        <div class="am-u-sm-2 am-u-sm-centered">
-            <button type="button" class="am-btn am-btn-primary am-radius" id="next">UPDATE</button>
-        </div>
-    </div>
+            <div class="am-form-group">
+                <div class="am-u-sm-offset-1">
+                    <button type="button" class="am-btn am-btn-primary am-radius" id="next">UPDATE</button>
+                </div>
+            </div>
 
-</form>
+        </form>
+    </div>
+</div>
+
 
 
 <div class="am-panel am-panel-secondary">
@@ -44,7 +50,7 @@
             </div>
             <div class="am-form-group">
         <span class="am-u-sm-2 am-u-sm-offset-1">
-            <button type="button" id="all" class="am-btn am-btn-primary am-active">UNSELECT ALL</button>
+            <button type="button" id="all" class="am-btn am-btn-primary">SELECT ALL</button>
         </span>
             </div>
         </form>
@@ -63,7 +69,7 @@
     </div>
 </div>
 <div class="am-g am-form-group">
-    <span class="am-u-sm-2 am-u-end">
+    <span class="am-u-sm-offset-1">
         <button type="button" class="am-btn am-btn-danger am-radius" id="copy">SUBMIT SYNC JOB</button>
     </span>
 </div>
@@ -100,6 +106,15 @@
     <div class="am-modal-footer">
       <span class="am-modal-btn" data-am-modal-cancel>Cancel</span>
       <span class="am-modal-btn" data-am-modal-confirm>Confirm</span>
+    </div>
+  </div>
+</div>
+
+<div class="am-modal am-modal-loading am-modal-no-btn" tabindex="-1" id="modal-loading">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd">loading...</div>
+    <div class="am-modal-bd">
+      <span class="am-icon-spinner am-icon-spin"></span>
     </div>
   </div>
 </div>

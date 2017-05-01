@@ -7,7 +7,7 @@
         <table class="am-table am-table-striped am-table-bordered am-table-compact" id="tasks">
             <thead>
             <tr>
-                <th>ID</th>
+                <th>Edit</th>
                 <th>jobs</th>
                 <th>srcHost</th>
                 <th>srcPort</th>

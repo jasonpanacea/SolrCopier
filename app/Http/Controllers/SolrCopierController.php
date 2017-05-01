@@ -107,6 +107,8 @@ class SolrCopierController extends Controller{
                 $kv = explode(' ',trim($sort));
                 $field_order_array[$kv[0]] = $kv[1];
             }
+            if(empty($copyJob->query))
+                $copyJob->query = "*:*";
             $copyJob->sort = json_encode($field_order_array);
             $copyJob->status = 'queued';
             $copyJob->taskID = $copyTask->id;

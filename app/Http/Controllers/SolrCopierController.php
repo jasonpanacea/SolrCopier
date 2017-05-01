@@ -103,15 +103,21 @@ class SolrCopierController extends Controller{
                     $copyJob->$key = json_encode($value):$copyJob->$key = $value;
 
             $field_order_array = [];
-            foreach (explode(',',$copyJob->sort) as $sort){
-                $kv = explode(' ',trim($sort));
-                $field_order_array[$kv[0]] = $kv[1];
+            if(isset($copyJob->sort)){
+                foreach (explode(',',$copyJob->sort) as $sort){
+                    $kv = explode(' ',trim($sort));
+                    $field_order_array[$kv[0]] = $kv[1];
+                }
             }
+            else{
+                $field_order_array['id'] = ['asc'];
+            }
+            $copyJob->sort = json_encode($field_order_array);
             if(empty($copyJob->query))
                 $copyJob->query = "*:*";
             if(empty($copyJob->batchSize))
                 $copyJob->batchSize = 100;
-            $copyJob->sort = json_encode($field_order_array);
+
             $copyJob->status = 'queued';
             $copyJob->taskID = $copyTask->id;
             $copyJob->save();
@@ -143,5 +149,13 @@ class SolrCopierController extends Controller{
             array_push($filterJobList , $value);
         }
         return response()->json(['data' => $filterJobList]);
+    }
+
+    public function getJobListByTaskID(Request $request){
+        $taskID = $request->get('taskID');
+        $copyTask = CopyTask::find($taskID);
+        if(empty($copyTask))
+            return response()->json(['jobs'=>[]]);
+        return response()->json(['jobs'=>$copyTask->jobs]);
     }
 }

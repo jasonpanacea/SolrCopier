@@ -65,6 +65,7 @@ $(function() {
             {data : 'query'},
             {data : 'omitFields'},
             {data : 'sort'},
+            {data : 'batchSize'},
             {
                 data : 'progress',
                 render : function(data, type , row) {

@@ -59,6 +59,7 @@
                     <th>query</th>
                     <th>omitFields</th>
                     <th>sort</th>
+                    <th>batchSize</th>
                     <th>progress</th>
                     <th>elapsed time</th>
                     <th>status</th>

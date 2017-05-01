@@ -156,6 +156,15 @@ class SolrCopierController extends Controller{
         $copyTask = CopyTask::find($taskID);
         if(empty($copyTask))
             return response()->json(['jobs'=>[]]);
-        return response()->json(['jobs'=>$copyTask->jobs]);
+        $filteredJobs = array();
+        foreach($copyTask->jobs as $key => $value) {
+            $item = new \stdClass();
+            $item->copiedNumber = $value->copiedNumber;
+            $item->totalNumber = $value->totalNumber;
+            $value->progress = $item;
+            $value->elapsed = date_diff(new \DateTime($value->updated_at) , new \DateTime($value->created_at))->format('%h hr %I min %S s');
+            array_push($filteredJobs , $value);
+        }
+        return response()->json(['jobs'=>$filteredJobs]);
     }
 }

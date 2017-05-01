@@ -2,28 +2,6 @@
  * Created by incpad on 1/16/17.
  */
 
-
-// function updateTable() {
-//     $.get("/jobProgress" , function(data) {
-//         if (data.statusCode == 200) {
-//             var jobList = data.jobList;
-//             jobList = jobList.map(function(val) {
-//                 return {
-//                     id : val.id,
-//                     index : val.srcIndex + ' -> ' + val.destIndex,
-//                     srcHost : '',
-//                     destHost : '',
-//                     progress : val.copidNumber + '/' + val.totalNumber,
-//                 };
-//             });
-//             $('#jobs').DataTable({
-//                 data : jobList
-//             });
-//
-//         }
-//     });
-// }
-
 $(function() {
     $('#jobList').addClass('am-active').siblings("li").removeClass("am-active");
     //https://datatables.net/examples/basic_init/language

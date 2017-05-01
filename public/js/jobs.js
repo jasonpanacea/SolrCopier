@@ -21,6 +21,7 @@ $(function() {
                 "previous":   "Previous"
             },
         },
+        order: [[0, "desc" ]],
         ajax : {
             url : "/jobProgress",
             dataSrc : 'data'

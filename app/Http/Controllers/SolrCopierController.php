@@ -121,7 +121,7 @@ class SolrCopierController extends Controller{
                 }
             }
             else{
-                $field_order_array['id'] = ['asc'];
+                $field_order_array['id'] = 'asc';
             }
             $copyJob->sort = json_encode($field_order_array);
             if(empty($copyJob->query))
@@ -148,7 +148,7 @@ class SolrCopierController extends Controller{
     }
 
     public function jobProgress(Request $request) {
-        $jobList  = CopyJob::where('status','scheduled')->get();
+        $jobList  = CopyJob::where('status','scheduled')->orderBy("updated_at" , "desc")->get();
         // $jobList  = CopyJob::all();
         $filterJobList = array();
         foreach ($jobList as $key => $value) {

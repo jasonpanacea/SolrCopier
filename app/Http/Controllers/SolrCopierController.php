@@ -15,6 +15,17 @@ use Illuminate\Support\Facades\Log;
 use App\Jobs\SolrIndexCopy;
 class SolrCopierController extends Controller{
 
+
+    public function getHomePage(Request $request) {
+        $taskID = $request->get('taskID' , '');
+        if ($taskID) {
+            $copyTask = CopyTask::find($taskID);
+            return view('welcome',['taskInfo' => $copyTask]);
+        } else {
+            return view('welcome');
+        }
+    }
+
     public function getIndexList(Request $request) {
         $srcIP = $request->input('srcIP');
         $srcPort = $request->input('srcPort');

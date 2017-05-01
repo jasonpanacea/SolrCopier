@@ -22,7 +22,9 @@
             <tbody>
             @foreach($taskList as $task)
             <tr class="odd gradeX">
-                <td>{{$task->id}}</td>
+                <td>
+                    <a class="am-btn am-btn-link go-edit-btn" data-taskid="{{$task->id}}" href="/?taskID={{$task->id}}">Edit</a>
+                </td>
                 <td>
                     <a class="am-btn am-btn-link show-jobs-btn" data-taskid="{{$task->id}}" data-srchost="{{$task->srcHost}}" data-desthost="{{$task->destHost}}">Show Jobs</a>
                 </td>

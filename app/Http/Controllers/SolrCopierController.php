@@ -156,6 +156,7 @@ class SolrCopierController extends Controller{
             $item->totalNumber = $value->totalNumber;
             $value->progress = $item;
             $value->elapsed = date_diff(new \DateTime($value->updated_at) , new \DateTime($value->created_at))->format('%h hr %I min %S s');
+            $value->action = (object)['action' => 'terminate' , 'jobId' => $value->id];
             array_push($filterJobList , $value);
         }
         return response()->json(['data' => $filterJobList]);

@@ -37,6 +37,12 @@ $(function() {
                 }
             },
             {data : 'elapsed'},
+            {
+                data : 'action' ,
+                render : function(data , type , row) {
+                    return '<a class="am-btn am-btn-link action-btn" data-jobid="'+data.jobId+'">'+data.action+'</a>';
+                }
+            },
             {data : 'status'}
         ],
     });
@@ -44,5 +50,17 @@ $(function() {
     /** Start the process to refresh table **/
     var nIntervId = setInterval(function() {
         jobsTable.ajax.reload();
-    }, 2000);
+    }, 4000);
+
+    $("#jobs").on("click" , ".action-btn" , function(event) {
+        var jobId = $(this).data("jobid");
+        $.get("/terminateJob" , {
+            jobID : jobId
+        },function(data) {
+            alert(data.msg);
+        }).fail(function(reason) {
+            console.log(reason);
+            alert("Failed to terminate current job.");
+        });
+    });
 });

@@ -12,6 +12,7 @@
                 <th>destIndex</th>
                 <th>progress</th>
                 <th>elapsed time</th>
+                <th>action</th>
                 <th>status</th>
             </tr>
             </thead>

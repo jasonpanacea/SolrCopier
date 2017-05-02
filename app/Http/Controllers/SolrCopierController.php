@@ -149,7 +149,6 @@ class SolrCopierController extends Controller{
 
     public function jobProgress(Request $request) {
         $jobList  = CopyJob::where('status','scheduled')->orderBy("updated_at" , "desc")->get();
-        // $jobList  = CopyJob::all();
         $filterJobList = array();
         foreach ($jobList as $key => $value) {
             $item = new \stdClass();
@@ -177,5 +176,15 @@ class SolrCopierController extends Controller{
             array_push($filteredJobs , $value);
         }
         return response()->json(['jobs'=>$filteredJobs]);
+    }
+
+    public function terminateJob(Request $request){
+        $jobID = $request->get("jobID");
+        $copyJob = CopyJob::find($jobID);
+        if(empty($copyJob))
+            return response()->json(["msg"=>"no associate job found"]);
+        $copyJob->terminate = 1;
+        $copyJob->save();
+        return response()->json(["msg"=>"termniate command has been submitted"]);
     }
 }

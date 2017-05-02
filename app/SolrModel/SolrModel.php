@@ -500,30 +500,38 @@ class SolrModel extends SolrBaseModel
             if($deletePreviousData){
                 $toIndex->delByQuery($job->query);
             }
-
-            $done = false;
+            $hasErr = false;
+            $done = false || $job->terminate;
             $cursorMark = '*';
-            while(!$done){
-                $returnObject = $fromIndex->selectSortByPageWithCursorMark(json_decode($job->sort, true), $job->batchSize, $cursorMark, $job->query);
-                if($job->totalNumber == 0)
+            while (!$done && !$job->terminate) {
+                $returnObject = $fromIndex->selectSortByPageWithCursorMark(json_decode($job->sort, true),
+                    $job->batchSize, $cursorMark, $job->query);
+                if ($job->totalNumber == 0)
                     $job->totalNumber = $returnObject->numFound;
                 try {
                     $toIndex->update($returnObject->list, false, true, $omitFields);
                     $job->copiedNumber += count($returnObject->list);
-                } catch (Exception $e) {
-                    Log::info('[Sync Error] index='.$job->destIndex);
+                } catch (\Exception $e) {
+                    Log::error('[Sync Error] index=' . $job->destIndex . "---range " .
+                        $job->copiedNumber . " : " . ($job->copiedNumber + $job->batchSize));
+                    Log::error('reason:' . $e->getMessage());
+                    $hasErr = true;
                 }
                 //update job progress
                 $job->save();
 
-                if($cursorMark == $returnObject->nextCursorMark)
+                if ($cursorMark == $returnObject->nextCursorMark)
                     $done = true;
                 else
                     $cursorMark = $returnObject->nextCursorMark;
             }
 
             Log::info("Sync from ".$job->src." to ".$job->dest." done.\n");
-            $job->status = 'finished';
+
+            if($job->terminate)
+                $job->status = 'terminated';
+            else
+                $hasErr?$job->status = 'finished with errors' : $job->status = 'finished';
             $job->save();
         }
         Log::info("----------------syncData END--------------------\n");

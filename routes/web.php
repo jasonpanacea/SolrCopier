@@ -23,3 +23,4 @@ Route::get('taskList', 'SolrCopierController@taskList');
 Route::get('jobList', 'SolrCopierController@jobList');
 Route::get('jobProgress', 'SolrCopierController@jobProgress');
 Route::get('getJobListByTaskID', 'SolrCopierController@getJobListByTaskID');
+Route::get('terminateJob', 'SolrCopierController@terminateJob');

@@ -83,7 +83,7 @@
             <li class="am-margin-vertical-sm">
                 <label for="query" class="am-u-sm-4 am-form-label">Solr Query</label>
                 <div class="am-u-sm-4 am-u-end">
-                    <input type="text" id="query" placeholder="">
+                    <textarea type="text" id="query" placeholder=""></textarea>
                 </div>
             </li>
             <li class="am-margin-vertical-sm">

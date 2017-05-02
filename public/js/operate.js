@@ -20,10 +20,9 @@ var hostConfigHanlder = {
         //need to verify the responese
         $.post('/getIndexList', {'srcIP':hostInfo.srcIP, 'srcPort':hostInfo.srcPort, 'destIP':hostInfo.destIP, 'destPort':hostInfo.destPort}, function (data) {
             if(data.srccode == 200 && data.destcode == 200){
-                // window.location.href = '/copyPage';
-                console.log(data);
                 copyHandler.setSrcIndexList(data.srcCollections);
                 copyHandler.setDestIndexList(data.srcCollections , data.destCollections);
+                copyHandler.showSrcIndexSection();
             }
             else{
                 alert(data.reason);

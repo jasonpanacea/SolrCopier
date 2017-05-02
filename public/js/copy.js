@@ -98,6 +98,15 @@ var copyHandler = {
             // console.log(data);
         });
     },
+    showSrcIndexSection : function() {
+        $("#src-index-list-section").show();
+    },
+    showDestIndexSection : function() {
+        $("#dest-index-list-section").show();
+    },
+    showSubmitSection : function() {
+        $("#submit-job-section").show();
+    }
 };
 
 $(function () {
@@ -152,17 +161,21 @@ $(function () {
         };
 
         $.post('/startSyncJob',postParam, function (data) {
-            $("#modal-loading").modal("close");
-            alert('the job has bee submitted');
+            // alert('the job has bee submitted');
             window.location = '/jobList';
+        }).fail(function(reason) {
+            alert("Failed to start a job");
+        }).always(function() {
+            $("#modal-loading").modal("close");
         });
     });
 
     $("#srcCollections-group").on("change" , 'input[type="checkbox"]' , function () {
+        copyHandler.showDestIndexSection();
+        copyHandler.showSubmitSection();
         if($(this).prop('checked')){
             $("#"+$(this).val()).show();
-        }
-        else{
+        } else {
             $("#"+$(this).val()).hide();
         }
     });

@@ -41,7 +41,7 @@
 
 
 
-<div class="am-panel am-panel-secondary" style="margin:0px;">
+<div id="src-index-list-section" class="am-panel am-panel-secondary" style="margin:0px;display:none;">
     <div class="am-panel-hd">source index list</div>
     <div class="am-panel-bd">
         <form class="am-form am-form-horizontal">
@@ -57,7 +57,7 @@
     </div>
 </div>
 
-<div id="dest-index-list-section" class="am-panel am-panel-success">
+<div id="dest-index-list-section" class="am-panel am-panel-success" style="display:none;">
     <div class="am-panel-hd">destination index list</div>
     <div class="am-panel-bd">
         <form class="am-form am-form-horizontal">
@@ -68,7 +68,7 @@
         </form>
     </div>
 </div>
-<div class="am-g am-form-group">
+<div id="submit-job-section" class="am-g am-form-group" style="display:none;">
     <span class="am-u-sm-offset-1">
         <button type="button" class="am-btn am-btn-danger am-radius" id="copy">SUBMIT SYNC JOB</button>
     </span>

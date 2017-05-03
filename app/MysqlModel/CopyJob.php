@@ -13,7 +13,7 @@ class CopyJob extends Model
         'query', 'sort', 'batchSize', 'copiedNumber', 'totalNumber', 'status', 'terminate'];
 
     public function task(){
-        return CopyTask::find($this->taskID);
+        return $this->belongsTo('App\MysqlModel\CopyTask', 'taskID');
     }
 
 }

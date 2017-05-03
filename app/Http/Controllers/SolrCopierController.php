@@ -31,8 +31,8 @@ class SolrCopierController extends Controller{
         $srcPort = $request->input('srcPort');
         $destIP = $request->input('destIP');
         $destPort = $request->input('destPort');
-        $srcURL = "http://".$srcIP.":".$srcPort."/solr/admin/collections?action=LIST&wt=json";
-        $destURL = "http://".$destIP.":".$destPort."/solr/admin/collections?action=LIST&wt=json";
+        $srcURL = "http://".trim($srcIP).":".trim($srcPort)."/solr/admin/collections?action=LIST&wt=json";
+        $destURL = "http://".trim($destIP).":".trim($destPort)."/solr/admin/collections?action=LIST&wt=json";
         $client = new GuzzleHttp\Client(['base_uri' => $srcURL, 'timeout'  => 2.0]);
         try{
             $response = $client->request('GET');

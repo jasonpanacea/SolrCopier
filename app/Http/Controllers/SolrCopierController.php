@@ -91,13 +91,6 @@ class SolrCopierController extends Controller{
 
     }
 
-    public function copyPage(Request $request){
-        $srcCollections = $request->cookie('srcCollections');
-        $destCollections = $request->cookie('destCollections');
-        return view('copy',['srcCollections'=>$srcCollections,'destCollections'=>$destCollections]);
-    }
-
-
     public function startSyncJob(Request $request){
         $copyTask = new CopyTask();
         $copyTask->status = 'queued';

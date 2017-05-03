@@ -531,7 +531,7 @@ class SolrModel extends SolrBaseModel
             if($job->terminate)
                 $job->status = 'terminated';
             else
-                $hasErr?$job->status = 'terminated with errors' : $job->status = 'finished';
+                $hasErr?$job->status = 'failed' : $job->status = 'finished';
             $job->save();
         }
         Log::info("----------------syncData END--------------------\n");

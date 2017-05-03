@@ -38,6 +38,12 @@ class SolrIndexCopy implements ShouldQueue
         SolrModel::syncData($this->task);
         Log::info("finish handle task: ".$this->task->id);
         $this->task->status = 'finished';
+        foreach ($this->task->jobs as $job){
+            if ($job->status == 'failed') {
+                $this->task->status = 'failed';
+                break;
+            }
+        }
         $this->task->save();
     }
 

@@ -10,7 +10,7 @@
                 <th>ID</th>
                 <th>srcIndex</th>
                 <th>destIndex</th>
-                <th>progress</th>
+                <th>processs</th>
                 <th>elapsed time</th>
                 <th>action</th>
                 <th>status</th>

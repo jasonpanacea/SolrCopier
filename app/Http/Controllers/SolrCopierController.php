@@ -179,6 +179,6 @@ class SolrCopierController extends Controller{
             return response()->json(["msg"=>"no associate job found"]);
         $copyJob->terminate = 1;
         $copyJob->save();
-        return response()->json(["msg"=>"termniate command has been submitted"]);
+        return response()->json(["msg"=>"terminate command has been submitted"]);
     }
 }

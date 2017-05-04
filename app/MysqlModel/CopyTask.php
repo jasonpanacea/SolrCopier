@@ -29,4 +29,11 @@ class CopyTask extends Model
         }
         $this->save();
     }
+    
+    public function checkConfilct(){
+        $currentJobIndexs = CopyTask::where('destHost',$this->destHost)->where('destPort',$this->destPort)
+            ->jobs()->whereIn('status',['queued','scheduled'])->pluck('destIndex')->get();
+        $thisJobIndexs = $this->jobs()->pluck(destIndex)->get();
+        return count(array_intersect($currentJobIndexs,$thisJobIndexs));
+    }
 }

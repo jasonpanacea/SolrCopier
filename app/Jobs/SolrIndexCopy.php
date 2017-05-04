@@ -33,6 +33,7 @@ class SolrIndexCopy implements ShouldQueue
      */
     public function handle()
     {
+        
         Log::info("start handle job: ".$this->job->id);
         $this->job->status = 'scheduled';
         $this->job->save();

@@ -126,7 +126,7 @@ class SolrCopierController extends Controller{
             $copyJob->taskID = $copyTask->id;
             $copyJob->save();            
         }
-        
+        Log::info($copyTask->checkConfilct());
         foreach ($copyTask->jobs as $copyJob)
             $this->dispatch(new SolrIndexCopy($copyJob));
         

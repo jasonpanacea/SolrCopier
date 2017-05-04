@@ -125,8 +125,10 @@ class SolrCopierController extends Controller{
             $copyJob->status = 'queued';
             $copyJob->taskID = $copyTask->id;
             $copyJob->save();
+
+            $this->dispatch(new SolrIndexCopy($copyJob));
         }
-        $this->dispatch(new SolrIndexCopy($copyTask));
+        
         return response()->json(['id'=>$copyTask->id]);
     }
 

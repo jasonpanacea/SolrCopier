@@ -18,4 +18,15 @@ class CopyTask extends Model
     public function jobs(){
         return $this->hasMany('App\MysqlModel\CopyJob', 'taskID');
     }
+    
+    public function updateStatus(){
+        $this->status = 'finished';
+        foreach ($this->jobs as $job){
+            if($job->status != 'finished'){
+                $this->status = $job->status;
+                break;
+            }
+        }
+        $this->save();
+    }
 }

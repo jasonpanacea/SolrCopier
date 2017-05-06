@@ -325,12 +325,8 @@ class SolrModel extends SolrBaseModel
         }
 
         $client = new GuzzleHttp\Client(['base_uri' => 'http://' . $destHost . ':' . $destPort]);
-        try {
-            $response = $client->request('POST', '/solr/' . $destIndex . '/update', ['json' => $docList]);
-            Log::info($response->getBody());
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-        }
+        $response = $client->request('POST', '/solr/' . $destIndex . '/update', ['json' => $docList]);
+        Log::info($response->getBody());
 
     }
     //not called by anyone currently

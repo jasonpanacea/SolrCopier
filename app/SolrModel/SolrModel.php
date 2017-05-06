@@ -9,7 +9,7 @@
 namespace App\SolrModel;
 use App\Util\SolrUtils;
 use Illuminate\Support\Facades\Log;
-use Solarium;
+use GuzzleHttp;
 class SolrModel extends SolrBaseModel
 {
     public function select($keyWord='Active:true',$fields=['*'])
@@ -285,6 +285,54 @@ class SolrModel extends SolrBaseModel
         return $result->getStatus();
     }
 
+    public function updateByGuzzle($omitFields, $data, $destHost, $destPort, $destIndex)
+    {
+        $omitFields = array_merge($omitFields, SolrBaseModel::$OMIT_FIELDS);
+        $docList = [];
+        if (is_array($data) && isset($data[0])) { //$data is array
+            $itemList = $data;
+        } else if (!empty($data)) {
+            $itemList = [$data];
+        } else {
+            return;
+        }
+
+        foreach ($itemList as $item) {
+            if (!is_array($item)) {
+                $item = new \ArrayObject($item);
+            }
+
+            // create a new document for the data
+            $doc = new \stdClass();
+            foreach ($item as $field => $value) {
+                //upadte data with some fields will cause conflict
+                if (in_array($field, $omitFields)) continue;
+                if (is_array($value)) {
+                    $arr = array();
+                    foreach ($value as $v) {
+                        if (is_array($v))
+                            array_push($arr, json_encode($v));
+                        else if (is_object($v))
+                            array_push($arr, json_encode($v));
+                        else
+                            array_push($arr, $v);
+                    }
+                    $value = $arr;
+                }
+                $doc->$field = $value;
+            }
+            $docList[] = $doc;
+        }
+
+        $client = new GuzzleHttp\Client(['base_uri' => 'http://' . $destHost . ':' . $destPort]);
+        try {
+            $response = $client->request('POST', '/solr/' . $destIndex . '/update', ['json' => $docList]);
+            Log::info($response->getBody());
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
+
+    }
     //not called by anyone currently
     public function delById($id){
         $update = $this->client->createUpdate();
@@ -509,7 +557,7 @@ class SolrModel extends SolrBaseModel
                 if ($job->totalNumber == 0)
                     $job->totalNumber = $returnObject->numFound;
 
-                $toIndex->update($returnObject->list, false, true, $omitFields);
+                $toIndex->updateByGuzzle($omitFields,$returnObject->list,$task->destHost, $task->destPort, $job->destIndex);
                 $job->copiedNumber += count($returnObject->list);
             } catch (\Exception $e) {
                 Log::error('[Sync Error] index=' . $job->destIndex . "---range " .

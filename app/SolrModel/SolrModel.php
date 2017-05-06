@@ -354,6 +354,12 @@ class SolrModel extends SolrBaseModel
         return $result->getStatus();
     }
 
+    public function delAllByGuzzle($destHost, $destPort, $destIndex){
+        $client = new GuzzleHttp\Client(['base_uri' => 'http://' . $destHost . ':' . $destPort]);
+        $response = $client->request('GET', '/solr/' . $destIndex . '/update?stream.body=<delete><query>*:*</query></delete>&commit=true');
+        Log::info($response->getBody());
+    }
+
     //call explicitly to commit data 
     public function commit($soft = false, $waitsearcher = true){
         $update = $this->client->createUpdate();
@@ -540,8 +546,9 @@ class SolrModel extends SolrBaseModel
         else
             $omitFields = [];
 
+        //will delete all data
         if ($deletePreviousData) {
-            $toIndex->delByQuery($job->query);
+            $toIndex->delAllByGuzzle($task->srcHost, $task->srcPort, $job->srcIndex);
         }
         $hasErr = false;
         $done = false || $job->terminate;

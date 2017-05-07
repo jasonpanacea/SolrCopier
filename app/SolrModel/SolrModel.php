@@ -531,7 +531,7 @@ class SolrModel extends SolrBaseModel
     }
 
 
-    public static function syncData($job, $deletePreviousData = true)
+    public static function syncData($job)
     {
         Log::info("----------------syncData job START--------------------\n");
         $task = $job->task;
@@ -546,10 +546,6 @@ class SolrModel extends SolrBaseModel
         else
             $omitFields = [];
 
-        //will delete all data
-        if ($deletePreviousData) {
-            $toIndex->delAllByGuzzle();
-        }
         $hasErr = false;
         $done = false || $job->terminate;
         $cursorMark = '*';

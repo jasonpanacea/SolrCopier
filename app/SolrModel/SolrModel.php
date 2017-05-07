@@ -285,7 +285,7 @@ class SolrModel extends SolrBaseModel
         return $result->getStatus();
     }
 
-    public function updateByGuzzle($omitFields, $data, $destHost, $destPort, $destIndex)
+    public function updateByGuzzle($omitFields, $data)
     {
         $omitFields = array_merge($omitFields, SolrBaseModel::$OMIT_FIELDS);
         $docList = [];
@@ -324,8 +324,8 @@ class SolrModel extends SolrBaseModel
             $docList[] = $doc;
         }
 
-        $client = new GuzzleHttp\Client(['base_uri' => 'http://' . $destHost . ':' . $destPort]);
-        $response = $client->request('POST', '/solr/' . $destIndex . '/update', ['json' => $docList]);
+        $client = new GuzzleHttp\Client(['base_uri' => 'http://' . $this->host . ':' . $this->port]);
+        $response = $client->request('POST', '/solr/' . $this->indexName . '/update', ['json' => $docList]);
         Log::info($response->getBody());
 
     }
@@ -354,9 +354,9 @@ class SolrModel extends SolrBaseModel
         return $result->getStatus();
     }
 
-    public function delAllByGuzzle($destHost, $destPort, $destIndex){
-        $client = new GuzzleHttp\Client(['base_uri' => 'http://' . $destHost . ':' . $destPort]);
-        $response = $client->request('GET', '/solr/' . $destIndex . '/update?stream.body=<delete><query>*:*</query></delete>&commit=true');
+    public function delAllByGuzzle(){
+        $client = new GuzzleHttp\Client(['base_uri' => 'http://' . $this->host . ':' . $this->port]);
+        $response = $client->request('GET', '/solr/' . $this->indexName . '/update?stream.body=<delete><query>*:*</query></delete>&commit=true');
         Log::info($response->getBody());
     }
 
@@ -548,7 +548,7 @@ class SolrModel extends SolrBaseModel
 
         //will delete all data
         if ($deletePreviousData) {
-            $toIndex->delAllByGuzzle($task->srcHost, $task->srcPort, $job->srcIndex);
+            $toIndex->delAllByGuzzle();
         }
         $hasErr = false;
         $done = false || $job->terminate;
@@ -560,7 +560,7 @@ class SolrModel extends SolrBaseModel
                 if ($job->totalNumber == 0)
                     $job->totalNumber = $returnObject->numFound;
 
-                $toIndex->updateByGuzzle($omitFields,$returnObject->list,$task->destHost, $task->destPort, $job->destIndex);
+                $toIndex->updateByGuzzle($omitFields,$returnObject->list);
                 $job->copiedNumber += count($returnObject->list);
             } catch (\Exception $e) {
                 Log::error('[Sync Error] index=' . $job->destIndex . "---range " .

@@ -77,7 +77,7 @@ class SolrModel extends SolrBaseModel
         return $list;
 
     }
-    
+
     public function selectMultiSort($sortfields, $keyWord='Active:true')
     {
     	$query = $this->client->createSelect();
@@ -108,7 +108,7 @@ class SolrModel extends SolrBaseModel
     		array_push($list, $item);
     	}
     	return $list;
-    
+
     }
 
     public function selectByPage($start, $rows, $keyWord='Active:true')
@@ -197,7 +197,7 @@ class SolrModel extends SolrBaseModel
     }
 
     //CAUTION !!!
-    //we cannot return the facet query result which is nothing directly 
+    //we cannot return the facet query result which is nothing directly
     //we must use foreach ($facetResult as $key => $value)
     //to get the valid result
     public function facetQuery($facetField, $keyWord, $minCount=1,$limit=1000){
@@ -326,7 +326,7 @@ class SolrModel extends SolrBaseModel
 
         $client = new GuzzleHttp\Client(['base_uri' => 'http://' . $this->host . ':' . $this->port]);
         $response = $client->request('POST', '/solr/' . $this->indexName . '/update?commitWithin=1000&overwrite=true', ['json' => $docList]);
-        Log::info($response->getBody());
+        // Log::info($response->getBody());
 
     }
     //not called by anyone currently
@@ -341,7 +341,7 @@ class SolrModel extends SolrBaseModel
 
         return $result->getStatus();
     }
-    
+
     public function delByQuery($query="*:*"){
         $update = $this->client->createUpdate();
         // add the delete id and a commit command to the update query
@@ -360,7 +360,7 @@ class SolrModel extends SolrBaseModel
         Log::info($response->getBody());
     }
 
-    //call explicitly to commit data 
+    //call explicitly to commit data
     public function commit($soft = false, $waitsearcher = true){
         $update = $this->client->createUpdate();
         $update->addCommit($soft, $waitsearcher);
@@ -440,7 +440,7 @@ class SolrModel extends SolrBaseModel
         $returnObject->numFound = $numFound;
         return $returnObject;
     }
-    
+
     public function getMaxMinScoreofDismaxQuery($queryalternative, $boostquery){
         $query = $this->client->createSelect();
         //need to set query to empty string
@@ -453,8 +453,8 @@ class SolrModel extends SolrBaseModel
         $dismax->setBoostQuery($boostquery);
         $dismax->setQueryAlternative($queryalternative);
         $resultset = $this->client->select($query);
-        
-        //to get max score, order by score desc  
+
+        //to get max score, order by score desc
         $list = array();
         foreach ($resultset as $document) {
             $item = new \stdClass();
@@ -469,7 +469,7 @@ class SolrModel extends SolrBaseModel
             $max = $list[0]->score;
         if(count($list)>1)
             $secondMax = $list[1]->score;
-        
+
         //to get min score, order by score asc
         $query->setSorts(['score'=>'asc']);
         $resultset = $this->client->select($query);
@@ -487,7 +487,7 @@ class SolrModel extends SolrBaseModel
         Log::info("SCORE:MAX,secondMAX,MIN---".json_encode([$max,$secondMax,$min]));
         return [$max,$secondMax,$min];
     }
-    
+
     public function hightlightQuery($sortField, $order, $start, $rows, $hightlightFields, $keyWord){
         // get a select query instance
         $query = $this->client->createSelect();
@@ -579,7 +579,7 @@ class SolrModel extends SolrBaseModel
         else
             $hasErr ? $job->status = 'failed' : $job->status = 'finished';
         $job->save();
-        
+
         Log::info("----------------syncData job END--------------------\n");
 
     }

@@ -236,11 +236,11 @@ $(function () {
     $("#dest-index-list-section").on("click" , ".fields-toggle-btn" ,function(event) {
         var $copyPairItem = $(this).parents(".copy-pair-item");
         var $fieldsBlock = $copyPairItem.find(".fields-block");
-        var $selectInput = $copyPairItem.attr('id');
+        var srcIndex = $copyPairItem.attr('id');
 
         if (!toggoleFieldsBtn($(this))) return;
 
-        copyHandler.getFieldList($selectInput.val() , function(reason , data) {
+        copyHandler.getFieldList(srcIndex , function(reason , data) {
             if (reason) {
                 alert(reason.error);
                 return;

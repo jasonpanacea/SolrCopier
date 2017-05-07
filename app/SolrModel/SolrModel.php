@@ -557,6 +557,7 @@ class SolrModel extends SolrBaseModel
             try {
                 $returnObject = $fromIndex->selectSortByPageWithCursorMark(json_decode($job->sort, true),
                     $job->batchSize, $cursorMark, $job->query);
+                Log::info(json_encode($returnObject));
                 if ($job->totalNumber == 0)
                     $job->totalNumber = $returnObject->numFound;
 

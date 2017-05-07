@@ -94,10 +94,10 @@ class SolrCopierController extends Controller{
     public function startSyncJob(Request $request){
         $copyTask = new CopyTask();
         $copyTask->status = 'queued';
-        $copyTask->srcHost = $request->get('srcHost');
-        $copyTask->srcPort = $request->get('srcPort');
-        $copyTask->destHost = $request->get('destHost');
-        $copyTask->destPort = $request->get('destPort');
+        $copyTask->srcHost = trim($request->get('srcHost'));
+        $copyTask->srcPort = trim($request->get('srcPort'));
+        $copyTask->destHost = trim($request->get('destHost'));
+        $copyTask->destPort = trim($request->get('destPort'));
         $copyTask->save();
         $indexList = $request->get('indexList');
         foreach ($indexList as $index){

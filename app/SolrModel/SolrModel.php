@@ -533,7 +533,6 @@ class SolrModel extends SolrBaseModel
 
     public static function syncData($job, $deletePreviousData = true)
     {
-        Log::info('!!!!!!!!A TEST!!!!!!!!!!');
         Log::info("----------------syncData job START--------------------\n");
         $task = $job->task;
         $job->status = 'scheduled';
@@ -558,7 +557,6 @@ class SolrModel extends SolrBaseModel
             try {
                 $returnObject = $fromIndex->selectSortByPageWithCursorMark(json_decode($job->sort, true),
                     $job->batchSize, $cursorMark, $job->query);
-                Log::info(json_encode($returnObject));
                 if ($job->totalNumber == 0)
                     $job->totalNumber = $returnObject->numFound;
 

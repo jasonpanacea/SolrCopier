@@ -236,7 +236,7 @@ $(function () {
     $("#dest-index-list-section").on("click" , ".fields-toggle-btn" ,function(event) {
         var $copyPairItem = $(this).parents(".copy-pair-item");
         var $fieldsBlock = $copyPairItem.find(".fields-block");
-        var $selectInput = $copyPairItem.find('select');
+        var $selectInput = $copyPairItem.attr('id');
 
         if (!toggoleFieldsBtn($(this))) return;
 

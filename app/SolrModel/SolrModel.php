@@ -325,7 +325,7 @@ class SolrModel extends SolrBaseModel
         }
 
         $client = new GuzzleHttp\Client(['base_uri' => 'http://' . $this->host . ':' . $this->port]);
-        $response = $client->request('POST', '/solr/' . $this->indexName . '/update', ['json' => $docList]);
+        $response = $client->request('POST', '/solr/' . $this->indexName . '/update?commitWithin=1000&overwrite=true', ['json' => $docList]);
         Log::info($response->getBody());
 
     }
@@ -537,9 +537,9 @@ class SolrModel extends SolrBaseModel
         $task = $job->task;
         $job->status = 'scheduled';
         $job->save();
-        $fromIndex = new SolrModel($job->src);
+        $fromIndex = new SolrModel($job->srcIndex);
         $fromIndex->setConfig($task->srcHost, $task->srcPort, $job->srcIndex);
-        $toIndex = new SolrModel($job->dest);
+        $toIndex = new SolrModel($job->destIndex);
         $toIndex->setConfig($task->destHost, $task->destPort, $job->destIndex);
         if (isset($job->omitFields))
             $omitFields = json_decode($job->omitFields);

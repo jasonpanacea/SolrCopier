@@ -11,9 +11,10 @@
 |
 */
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/', 'SolrCopierController@getHomePage');
-});
+//Route::group(['middleware' => 'auth'], function () {
+//    Route::get('/', 'SolrCopierController@getHomePage');
+//});
+Route::get('/', 'SolrCopierController@getHomePage');
 Route::post('getIndexList', 'SolrCopierController@getIndexList');
 Route::post('getFieldList', 'SolrCopierController@getFieldList');
 Route::post('startSyncJob', 'SolrCopierController@startSyncJob');

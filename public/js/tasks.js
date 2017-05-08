@@ -12,6 +12,7 @@ $(function() {
             "zeroRecords": "Nothing found - sorry",
             "info": "Showing page _PAGE_ of _PAGES_",
             "infoEmpty": "No records available",
+            "emptyTable": "No data available in table",
             "search": "Search:",
             "infoFiltered": "(filtered from _MAX_ total records)",
             "paginate": {

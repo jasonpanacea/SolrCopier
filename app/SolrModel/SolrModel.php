@@ -326,8 +326,6 @@ class SolrModel extends SolrBaseModel
 
         $client = new GuzzleHttp\Client(['base_uri' => 'http://' . $this->host . ':' . $this->port]);
         $response = $client->request('POST', '/solr/' . $this->indexName . '/update?commitWithin=1000&overwrite=true', ['json' => $docList]);
-        Log::info($response->getBody());
-
     }
     //not called by anyone currently
     public function delById($id){
@@ -357,7 +355,6 @@ class SolrModel extends SolrBaseModel
     public function delAllByGuzzle(){
         $client = new GuzzleHttp\Client(['base_uri' => 'http://' . $this->host . ':' . $this->port]);
         $response = $client->request('GET', '/solr/' . $this->indexName . '/update?stream.body=<delete><query>*:*</query></delete>&commit=true');
-        Log::info($response->getBody());
     }
 
     //call explicitly to commit data 

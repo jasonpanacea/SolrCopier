@@ -11,10 +11,9 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-Route::get('/' , 'SolrCopierController@getHomePage');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', 'SolrCopierController@getHomePage');
+});
 Route::post('getIndexList', 'SolrCopierController@getIndexList');
 Route::post('getFieldList', 'SolrCopierController@getFieldList');
 Route::post('startSyncJob', 'SolrCopierController@startSyncJob');
@@ -23,3 +22,5 @@ Route::get('jobList', 'SolrCopierController@jobList');
 Route::get('jobProgress', 'SolrCopierController@jobProgress');
 Route::get('getJobListByTaskID', 'SolrCopierController@getJobListByTaskID');
 Route::get('terminateJob', 'SolrCopierController@terminateJob');
+
+Auth::routes();

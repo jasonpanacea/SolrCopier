@@ -65,7 +65,7 @@
 
             <div class="am-form-group">
                 <div class="am-u-sm-offset-1">
-                    <button type="button" class="am-btn am-btn-primary am-radius" id="next">UPDATE</button>
+                    <button type="button" class="am-btn am-btn-primary am-radius" id="next">GET INDEX LIST</button>
                 </div>
             </div>
 

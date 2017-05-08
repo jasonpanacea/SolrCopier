@@ -41,28 +41,6 @@
                     </div>
                 </li>
             </ul>
-            <!-- <div class="am-form-group">
-                <label for="src-ip" class="am-u-sm-2 am-form-label">Source Solr Host</label>
-                <span class="am-u-sm-4">
-                    <input type="text" id="src-ip" placeholder="" value="@if($taskInfo){{$taskInfo->srcHost}}@endif">
-                </span>
-                <label for="src-port" class="am-u-sm-1 am-form-label">PORT</label>
-                <span class="am-u-sm-4 am-u-end">
-                    <input type="text" id="src-port" placeholder="" value="@if($taskInfo){{$taskInfo->srcPort}}@endif">
-                </span>
-            </div>
-
-            <div class="am-form-group">
-                <label for="dest-ip" class="am-u-sm-2 am-form-label">Destination Solr Host</label>
-                <div class="am-u-sm-4 am-u-end">
-                    <input type="text" id="dest-ip" placeholder="" value="@if($taskInfo){{$taskInfo->destHost}}@endif">
-                </div>
-                <label for="dest-port" class="am-u-sm-1 am-form-label">PORT</label>
-                 <span class="am-u-sm-4 am-u-end">
-                    <input type="text" id="dest-port" placeholder="" value="@if($taskInfo){{$taskInfo->destPort}}@endif">
-                </span>
-            </div> -->
-
             <div class="am-form-group">
                 <div class="am-u-sm-offset-1">
                     <button type="button" class="am-btn am-btn-primary am-radius" id="next">GET INDEX LIST</button>
@@ -76,7 +54,7 @@
 
 
 <div id="src-index-list-section" class="am-panel am-panel-secondary" style="margin:0px;display:none;">
-    <div class="am-panel-hd">source index list</div>
+    <div class="am-panel-hd">select source indexes to copy</div>
     <div class="am-panel-bd">
         <form class="am-form am-form-horizontal">
             <div id="srcCollections-group" class="am-form-group am-g am-g-fixed">
@@ -92,7 +70,7 @@
 </div>
 
 <div id="dest-index-list-section" class="am-panel am-panel-success" style="display:none;">
-    <div class="am-panel-hd">destination index list</div>
+    <div class="am-panel-hd">seleted copy pairs</div>
     <div class="am-panel-bd">
         <form class="am-form am-form-horizontal">
             <div id="destCollections-group" class="am-form-group am-g">

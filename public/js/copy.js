@@ -190,6 +190,8 @@ $(function () {
            });
        }
         else{
+            copyHandler.showDestIndexSection();
+            copyHandler.showSubmitSection();            
            $(this).addClass("am-active");
            $('input[type="checkbox"]').prop('checked', true);
            $(this).html("UNSELECT ALL");

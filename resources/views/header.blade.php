@@ -29,13 +29,8 @@
             <li id="taskList"><a href="/taskList">History</a></li>
         </ul>
 
-
         <div class="am-topbar-right">
-            <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm">Sign Up</button>
-        </div>
-
-        <div class="am-topbar-right">
-            <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm">Login</button>
+            <a class="am-btn am-btn-primary am-topbar-btn am-btn-sm" href="/logout">Log out</a>
         </div>
     </div>
 </header>

@@ -126,7 +126,9 @@ class SolrCopierController extends Controller{
             $copyJob->taskID = $copyTask->id;
             $copyJob->save();            
         }
-        Log::info($copyTask->checkConfilct());
+        if($copyTask->checkConfilct()){
+            return response()->json(['msg'=>'job conflicts with others']);
+        }
         foreach ($copyTask->jobs as $copyJob)
             $this->dispatch(new SolrIndexCopy($copyJob));
         
@@ -141,6 +143,16 @@ class SolrCopierController extends Controller{
     public function jobList(Request $request){
         $jobList  = CopyJob::all();
         return view('jobs',['jobList'=>$jobList]);
+    }
+
+    public function redoJob(Request $request){
+        $job = CopyJob::find($request->get('job'));
+        if(isset($job)){
+            $copyJob = new CopyJob();
+            //to do
+            //set job data
+
+        }
     }
 
     public function jobProgress(Request $request) {

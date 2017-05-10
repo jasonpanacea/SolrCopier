@@ -12,16 +12,17 @@
 */
 
 Route::group(['middleware' => 'auth'], function () {
-   Route::get('/', 'SolrCopierController@getHomePage');
+    Route::get('/', 'SolrCopierController@getHomePage');
+    Route::post('getIndexList', 'SolrCopierController@getIndexList');
+    Route::post('getFieldList', 'SolrCopierController@getFieldList');
+    Route::post('startSyncJob', 'SolrCopierController@startSyncJob');
+    Route::get('taskList', 'SolrCopierController@taskList');
+    Route::get('jobList', 'SolrCopierController@jobList');
+    Route::get('jobProgress', 'SolrCopierController@jobProgress');
+    Route::get('getJobListByTaskID', 'SolrCopierController@getJobListByTaskID');
+    Route::get('terminateJob', 'SolrCopierController@terminateJob');
+    Route::get('/logout', 'Auth\LoginController@logout');
 });
-Route::get('/', 'SolrCopierController@getHomePage');
-Route::post('getIndexList', 'SolrCopierController@getIndexList');
-Route::post('getFieldList', 'SolrCopierController@getFieldList');
-Route::post('startSyncJob', 'SolrCopierController@startSyncJob');
-Route::get('taskList', 'SolrCopierController@taskList');
-Route::get('jobList', 'SolrCopierController@jobList');
-Route::get('jobProgress', 'SolrCopierController@jobProgress');
-Route::get('getJobListByTaskID', 'SolrCopierController@getJobListByTaskID');
-Route::get('terminateJob', 'SolrCopierController@terminateJob');
+
 
 Auth::routes();

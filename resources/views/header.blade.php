@@ -30,6 +30,7 @@
         </ul>
 
         <div class="am-topbar-right">
+            <a class="am-btn am-btn-primary am-topbar-btn am-btn-sm" href="/">{{Auth::user()->name}}</a>
             <a class="am-btn am-btn-primary am-topbar-btn am-btn-sm" href="/logout">Log out</a>
         </div>
     </div>

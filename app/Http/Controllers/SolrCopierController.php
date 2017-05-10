@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use GuzzleHttp;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use App\Jobs\SolrIndexCopy;
 class SolrCopierController extends Controller{
 
@@ -93,6 +94,7 @@ class SolrCopierController extends Controller{
 
     public function startSyncJob(Request $request){
         $copyTask = new CopyTask();
+        $copyTask->user_id = Auth::id();
         $copyTask->status = 'queued';
         $copyTask->srcHost = trim($request->get('srcHost'));
         $copyTask->srcPort = trim($request->get('srcPort'));
@@ -137,6 +139,8 @@ class SolrCopierController extends Controller{
 
     public function taskList(Request $request){
         $taskList  = CopyTask::all();
+        foreach ($taskList as $task)
+            $task->user;
         return view('tasks',['taskList'=>$taskList]);
     }
 

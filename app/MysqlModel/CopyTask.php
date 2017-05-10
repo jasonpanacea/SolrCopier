@@ -13,10 +13,13 @@ class CopyTask extends Model
 {
     protected $table = 'tasks';
 
-    protected $fillable = ['srcHost','srcPort','destHost','destPort', 'status'];
+    protected $fillable = ['user_id','srcHost','srcPort','destHost','destPort', 'status'];
 
     public function jobs(){
         return $this->hasMany('App\MysqlModel\CopyJob', 'taskID');
+    }
+    public function user(){
+        return $this->belongsTo('App\MysqlModel\User', 'user_id');
     }
     
     public function updateStatus(){

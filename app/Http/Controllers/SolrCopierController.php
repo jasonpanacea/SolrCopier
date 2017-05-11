@@ -126,15 +126,15 @@ class SolrCopierController extends Controller{
 
             $copyJob->status = 'queued';
             $copyJob->taskID = $copyTask->id;
-            $copyJob->save();            
+            $copyJob->save();
         }
         if($copyTask->checkConfilct()){
-            return response()->json(['msg'=>'job conflicts with others']);
+            return response()->json(['status' => 'fail' , 'msg'=>'job conflicts with others']);
         }
         foreach ($copyTask->jobs as $copyJob)
             $this->dispatch(new SolrIndexCopy($copyJob));
-        
-        return response()->json(['id'=>$copyTask->id]);
+
+        return response()->json(['status' => 'ok' , 'id'=>$copyTask->id]);
     }
 
     public function taskList(Request $request){

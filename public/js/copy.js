@@ -162,8 +162,12 @@ $(function () {
 
         $.post('/startSyncJob',postParam, function (data) {
             // alert('the job has bee submitted');
-            window.location = '/jobList';
+            if (data.status == 'ok')
+                window.location = '/jobList';
+            else
+                alert(data.msg);
         }).fail(function(reason) {
+            console.log(reason);
             alert("Failed to start a job");
         }).always(function() {
             $("#modal-loading").modal("close");
@@ -191,7 +195,7 @@ $(function () {
        }
         else{
             copyHandler.showDestIndexSection();
-            copyHandler.showSubmitSection();            
+            copyHandler.showSubmitSection();
            $(this).addClass("am-active");
            $('input[type="checkbox"]').prop('checked', true);
            $(this).html("UNSELECT ALL");

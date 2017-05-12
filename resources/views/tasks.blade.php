@@ -8,6 +8,7 @@
             <thead>
             <tr>
                 <th>id</th>
+                <th>created_by</th>
                 <th>jobs</th>
                 <th>srcHost</th>
                 <th>srcPort</th>
@@ -25,6 +26,7 @@
                 <td>
                     <a class="am-btn am-btn-link go-edit-btn" data-taskid="{{$task->id}}" href="/?taskID={{$task->id}}">{{$task->id}}</a>
                 </td>
+                <td>{{$task->user->name}}</td>
                 <td>
                     <a class="am-btn am-btn-link show-jobs-btn" data-taskid="{{$task->id}}" data-srchost="{{$task->srcHost}}" data-desthost="{{$task->destHost}}">Show Jobs</a>
                 </td>
